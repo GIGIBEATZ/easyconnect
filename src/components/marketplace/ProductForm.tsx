@@ -3,6 +3,7 @@ import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
 import { ArrowLeft, Plus, X } from 'lucide-react';
 import type { Database } from '../../lib/database.types';
+import { CompletenessScorer } from '../ai/CompletenessScorer';
 
 type Category = Database['public']['Tables']['categories']['Row'];
 type Product = Database['public']['Tables']['products']['Row'];
@@ -127,6 +128,8 @@ export const ProductForm = ({ product, onBack, onSuccess }: ProductFormProps) =>
             {error}
           </div>
         )}
+
+        <CompletenessScorer formData={formData} className="mb-6" />
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
