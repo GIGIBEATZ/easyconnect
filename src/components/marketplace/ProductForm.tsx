@@ -4,6 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { ArrowLeft, Plus, X } from 'lucide-react';
 import type { Database } from '../../lib/database.types';
 import { CompletenessScorer } from '../ai/CompletenessScorer';
+import { AIAssistantPanel } from '../ai/AIAssistantPanel';
 
 type Category = Database['public']['Tables']['categories']['Row'];
 type Product = Database['public']['Tables']['products']['Row'];
@@ -65,6 +66,13 @@ export const ProductForm = ({ product, onBack, onSuccess }: ProductFormProps) =>
     setFormData({
       ...formData,
       images: formData.images.filter((_, i) => i !== index),
+    });
+  };
+
+  const handleUpdateField = (field: string, value: any) => {
+    setFormData({
+      ...formData,
+      [field]: value,
     });
   };
 
@@ -130,6 +138,13 @@ export const ProductForm = ({ product, onBack, onSuccess }: ProductFormProps) =>
         )}
 
         <CompletenessScorer formData={formData} className="mb-6" />
+
+        <AIAssistantPanel
+          formData={formData}
+          categories={categories}
+          onUpdateField={handleUpdateField}
+          className="mb-6"
+        />
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
