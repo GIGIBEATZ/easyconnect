@@ -66,10 +66,15 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
         .eq('is_active', true)
         .order('sort_order');
 
-      if (error) throw error;
-      if (data) setLanguages(data);
+      if (error) {
+        console.warn('Languages table not populated, using defaults');
+        return;
+      }
+      if (data && data.length > 0) {
+        setLanguages(data);
+      }
     } catch (error) {
-      console.error('Error loading languages:', error);
+      console.warn('Error loading languages, using defaults:', error);
     }
   };
 
@@ -83,13 +88,16 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
         .eq('user_id', user.id)
         .maybeSingle();
 
-      if (error) throw error;
+      if (error) {
+        console.warn('User language preferences not set:', error);
+        return;
+      }
       if (data?.language_code) {
         setLanguage(data.language_code);
         setStoredLanguage(data.language_code);
       }
     } catch (error) {
-      console.error('Error loading user language preference:', error);
+      console.warn('Error loading user language preference:', error);
     }
   };
 

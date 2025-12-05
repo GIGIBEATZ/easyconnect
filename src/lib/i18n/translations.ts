@@ -18,17 +18,22 @@ export const loadTranslations = async (languageCode: string): Promise<Translatio
       `)
       .eq('language_code', languageCode);
 
-    if (error) throw error;
+    if (error) {
+      console.warn(`Translations not available for ${languageCode}`);
+      return {};
+    }
 
     const translationMap: TranslationMap = {};
-    data?.forEach((item: any) => {
-      translationMap[item.translation_keys.key] = item.value;
-    });
+    if (data && data.length > 0) {
+      data.forEach((item: any) => {
+        translationMap[item.translation_keys.key] = item.value;
+      });
+      translationCache.set(languageCode, translationMap);
+    }
 
-    translationCache.set(languageCode, translationMap);
     return translationMap;
   } catch (error) {
-    console.error('Error loading translations:', error);
+    console.warn('Error loading translations:', error);
     return {};
   }
 };
