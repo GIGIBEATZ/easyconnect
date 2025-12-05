@@ -9,9 +9,10 @@ type Product = Database['public']['Tables']['products']['Row'];
 interface DealsViewProps {
   onProductSelect: (product: Product) => void;
   onBack: () => void;
+  onAddToCart?: (product: Product) => void;
 }
 
-export const DealsView = ({ onProductSelect, onBack }: DealsViewProps) => {
+export const DealsView = ({ onProductSelect, onBack, onAddToCart }: DealsViewProps) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -98,6 +99,7 @@ export const DealsView = ({ onProductSelect, onBack }: DealsViewProps) => {
               <ProductCard
                 product={product}
                 onViewDetails={onProductSelect}
+                onAddToCart={onAddToCart}
               />
             </div>
           ))}

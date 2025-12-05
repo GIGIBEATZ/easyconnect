@@ -10,9 +10,10 @@ type Category = Database['public']['Tables']['categories']['Row'];
 interface CategoryViewProps {
   onProductSelect: (product: Product) => void;
   onBack: () => void;
+  onAddToCart?: (product: Product) => void;
 }
 
-export const CategoryView = ({ onProductSelect, onBack }: CategoryViewProps) => {
+export const CategoryView = ({ onProductSelect, onBack, onAddToCart }: CategoryViewProps) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
@@ -176,6 +177,7 @@ export const CategoryView = ({ onProductSelect, onBack }: CategoryViewProps) => 
               key={product.id}
               product={product}
               onViewDetails={onProductSelect}
+              onAddToCart={onAddToCart}
             />
           ))}
         </div>

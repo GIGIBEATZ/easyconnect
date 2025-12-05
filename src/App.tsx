@@ -39,7 +39,7 @@ type Job = Database['public']['Tables']['jobs']['Row'];
 
 function AppContent() {
   const { user, loading } = useAuth();
-  const { totalItems } = useCart();
+  const { totalItems, addItem } = useCart();
   const [showSignUp, setShowSignUp] = useState(false);
   const [currentView, setCurrentView] = useState('home');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -48,7 +48,6 @@ function AppContent() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleAddToCart = (product: Product) => {
-    const { addItem } = useCart();
     addItem(product);
     setShowCartBadge(true);
     setTimeout(() => setShowCartBadge(false), 2000);
@@ -116,6 +115,7 @@ function AppContent() {
               setCurrentView('product-details');
             }}
             onAddProduct={() => setCurrentView('add-product')}
+            onAddToCart={handleAddToCart}
           />
         )}
 
@@ -304,6 +304,7 @@ function AppContent() {
               setCurrentView('product-details');
             }}
             onBack={() => setCurrentView('marketplace')}
+            onAddToCart={handleAddToCart}
           />
         )}
 
@@ -314,6 +315,7 @@ function AppContent() {
               setCurrentView('product-details');
             }}
             onBack={() => setCurrentView('marketplace')}
+            onAddToCart={handleAddToCart}
           />
         )}
 
