@@ -2,13 +2,9 @@ import { useState } from 'react';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabase';
-import { Settings, Sun, Moon, Monitor, Bell, Mail, User, Globe, ChevronRight } from 'lucide-react';
+import { Settings, Sun, Moon, Monitor, Bell, Mail, User } from 'lucide-react';
 
-interface SettingsViewProps {
-  onNavigate?: (view: string) => void;
-}
-
-export const SettingsView = ({ onNavigate }: SettingsViewProps = {}) => {
+export const SettingsView = () => {
   const { themeMode, setThemeMode, colorScheme, setColorScheme } = useTheme();
   const { profile } = useAuth();
   const [saving, setSaving] = useState(false);
@@ -256,32 +252,6 @@ export const SettingsView = ({ onNavigate }: SettingsViewProps = {}) => {
             </button>
           </div>
         </div>
-
-        {onNavigate && (
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border-2 border-dashed border-orange-300 dark:border-orange-800">
-            <div className="flex items-start justify-between">
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-2">
-                  <Globe className="w-5 h-5 text-orange-600 dark:text-orange-400" />
-                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Browser Experience</h2>
-                  <span className="px-2 py-0.5 text-xs font-medium bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 rounded">
-                    EXPERIMENTAL
-                  </span>
-                </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                  Enable immersive browsing with automatic tab bar hiding, custom backgrounds, and a distraction-free experience.
-                </p>
-                <button
-                  onClick={() => onNavigate('browser-settings')}
-                  className="flex items-center gap-2 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors font-medium"
-                >
-                  Configure Browser Settings
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

@@ -1,12 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { CartProvider, useCart } from './contexts/CartContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { FavoritesProvider } from './contexts/FavoritesContext';
 import { NotificationsProvider } from './contexts/NotificationsContext';
 import { LanguageProvider } from './contexts/LanguageContext';
-import { BrowserWindow } from './components/browser/BrowserWindow';
-import { BrowserSettings } from './components/browser/BrowserSettings';
 import { SignInForm } from './components/auth/SignInForm';
 import { SignUpForm } from './components/auth/SignUpForm';
 import { Sidebar } from './components/layout/Sidebar';
@@ -48,14 +46,6 @@ function AppContent() {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [showCartBadge, setShowCartBadge] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [hideTabBar, setHideTabBar] = useState(() => {
-    const stored = localStorage.getItem('hide_tab_bar');
-    return stored === 'true';
-  });
-
-  useEffect(() => {
-    localStorage.setItem('hide_tab_bar', String(hideTabBar));
-  }, [hideTabBar]);
 
   const handleAddToCart = (product: Product) => {
     addItem(product);
@@ -76,49 +66,46 @@ function AppContent() {
 
   if (!user) {
     return (
-      <BrowserWindow hideTabBar={hideTabBar} customBackground="https://images.pexels.com/photos/1076758/pexels-photo-1076758.jpeg?auto=compress&cs=tinysrgb&w=1920">
-        <div className="min-h-full bg-gradient-to-br from-blue-50/80 to-green-50/80 dark:from-gray-900/80 dark:to-gray-800/80 flex items-center justify-center py-12 px-4">
-          {showSignUp ? (
-            <SignUpForm onToggleForm={() => setShowSignUp(false)} />
-          ) : (
-            <SignInForm onToggleForm={() => setShowSignUp(true)} />
-          )}
-        </div>
-      </BrowserWindow>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center py-12 px-4">
+        {showSignUp ? (
+          <SignUpForm onToggleForm={() => setShowSignUp(false)} />
+        ) : (
+          <SignInForm onToggleForm={() => setShowSignUp(true)} />
+        )}
+      </div>
     );
   }
 
   return (
-    <BrowserWindow hideTabBar={hideTabBar} customBackground="https://images.pexels.com/photos/1076758/pexels-photo-1076758.jpeg?auto=compress&cs=tinysrgb&w=1920">
-      <div className="h-full bg-gray-50/90 dark:bg-gray-900/90 flex">
-        <Sidebar
-          currentView={currentView}
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
+      <Sidebar
+        currentView={currentView}
+        onViewChange={setCurrentView}
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
+
+      <div className="flex-1 flex flex-col lg:ml-64">
+        <SimplifiedHeader
           onViewChange={setCurrentView}
-          isOpen={sidebarOpen}
-          onClose={() => setSidebarOpen(false)}
+          onMenuToggle={() => setSidebarOpen(!sidebarOpen)}
         />
 
-        <div className="flex-1 flex flex-col lg:ml-64">
-          <SimplifiedHeader
-            onViewChange={setCurrentView}
-            onMenuToggle={() => setSidebarOpen(!sidebarOpen)}
-          />
+      {user && (
+        <button
+          onClick={() => setCurrentView('cart')}
+          className="fixed bottom-6 right-6 z-50 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-all hover:scale-110"
+        >
+          <ShoppingCart className="w-6 h-6" />
+          {totalItems > 0 && (
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">
+              {totalItems}
+            </span>
+          )}
+        </button>
+      )}
 
-        {user && (
-          <button
-            onClick={() => setCurrentView('cart')}
-            className="fixed bottom-6 right-6 z-50 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-all hover:scale-110"
-          >
-            <ShoppingCart className="w-6 h-6" />
-            {totalItems > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">
-                {totalItems}
-              </span>
-            )}
-          </button>
-        )}
-
-        <main className="flex-1 overflow-y-auto">
+      <main>
         {currentView === 'home' && <Hero onViewChange={setCurrentView} />}
 
         {currentView === 'marketplace' && (
@@ -299,11 +286,7 @@ function AppContent() {
           </div>
         )}
 
-        {currentView === 'settings' && <SettingsView onNavigate={setCurrentView} />}
-
-        {currentView === 'browser-settings' && (
-          <BrowserSettings hideTabBar={hideTabBar} onToggleTabBar={setHideTabBar} />
-        )}
+        {currentView === 'settings' && <SettingsView />}
 
         {currentView === 'wishlist' && (
           <WishlistView
@@ -360,9 +343,8 @@ function AppContent() {
           onViewChange={setCurrentView}
           onMenuToggle={() => setSidebarOpen(!sidebarOpen)}
         />
-        </div>
       </div>
-    </BrowserWindow>
+    </div>
   );
 }
 
