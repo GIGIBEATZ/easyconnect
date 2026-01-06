@@ -69,7 +69,7 @@ export const SimplifiedHeader = ({ onViewChange, onMenuToggle }: SimplifiedHeade
               )}
             </button>
 
-            {profile && (
+            {profile ? (
               <div className="relative">
                 <button
                   onClick={() => setProfileMenuOpen(!profileMenuOpen)}
@@ -142,6 +142,14 @@ export const SimplifiedHeader = ({ onViewChange, onMenuToggle }: SimplifiedHeade
                   </div>
                 )}
               </div>
+            ) : (
+              <button
+                onClick={() => onViewChange('create-ticket')}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm flex items-center gap-2"
+              >
+                <User className="w-4 h-4" />
+                <span className="hidden sm:inline">Sign In</span>
+              </button>
             )}
           </div>
         </div>

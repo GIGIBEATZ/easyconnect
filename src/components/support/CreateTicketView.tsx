@@ -51,7 +51,7 @@ export const CreateTicketView = ({ onSuccess, onBack }: CreateTicketViewProps) =
     setError('');
 
     if (!user) {
-      setError('You must be logged in to create a ticket');
+      setError('Please sign in or create an account to submit a support ticket');
       return;
     }
 

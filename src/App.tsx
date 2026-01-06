@@ -85,28 +85,58 @@ function AppContent() {
     );
   }
 
-  if (!user) {
+  const protectedViews = ['create-ticket', 'tickets', 'my-orders', 'my-products', 'settings', 'wishlist', 'dashboard', 'my-jobs', 'my-applications', 'seller-dashboard', 'cart', 'checkout', 'edit-product', 'add-product'];
+
+  const showAuthModal = !user && protectedViews.includes(currentView);
+
+  if (showAuthModal) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center py-12 px-4">
-        {showSignUp ? (
-          <SignUpForm onToggleForm={() => setShowSignUp(false)} />
-        ) : (
-          <SignInForm onToggleForm={() => setShowSignUp(true)} />
-        )}
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
+        <div className="flex-1">
+          <SimplifiedHeader
+            onViewChange={setCurrentView}
+            onMenuToggle={() => setSidebarOpen(!sidebarOpen)}
+          />
+          <div className="flex items-center justify-center py-12 px-4 min-h-[calc(100vh-4rem)]">
+            <div className="max-w-md w-full">
+              <div className="text-center mb-6">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  Sign In Required
+                </h2>
+                <p className="text-gray-600 dark:text-gray-400 mb-4">
+                  Please sign in or create an account to access this feature
+                </p>
+                <button
+                  onClick={() => setCurrentView('home')}
+                  className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm"
+                >
+                  ← Back to homepage
+                </button>
+              </div>
+              {showSignUp ? (
+                <SignUpForm onToggleForm={() => setShowSignUp(false)} />
+              ) : (
+                <SignInForm onToggleForm={() => setShowSignUp(true)} />
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
-      <Sidebar
-        currentView={currentView}
-        onViewChange={setCurrentView}
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-      />
+      {user && (
+        <Sidebar
+          currentView={currentView}
+          onViewChange={setCurrentView}
+          isOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+        />
+      )}
 
-      <div className="flex-1 flex flex-col lg:ml-64">
+      <div className={`flex-1 flex flex-col ${user ? 'lg:ml-64' : ''}`}>
         <SimplifiedHeader
           onViewChange={setCurrentView}
           onMenuToggle={() => setSidebarOpen(!sidebarOpen)}

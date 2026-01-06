@@ -9,6 +9,7 @@ type Profile = Database['public']['Tables']['profiles']['Row'];
 interface AgentsViewProps {
   onAgentSelect: (agent: Profile) => void;
   onContactAgent: (agent: Profile) => void;
+  onSignInRequired?: () => void;
 }
 
 export const AgentsView = ({ onAgentSelect, onContactAgent }: AgentsViewProps) => {
