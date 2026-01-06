@@ -129,53 +129,67 @@ function AppContent() {
             />
           )}
 
-          {currentView === 'service-details' && selectedService && (
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-              <button
-                onClick={() => setCurrentView('services')}
-                className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium mb-6"
-              >
-                ← Back to Services
-              </button>
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-8">
-                <div className="max-w-2xl">
-                  <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                    {selectedService.title}
-                  </h1>
-                  <p className="text-gray-600 dark:text-gray-300 text-lg mb-6">
-                    {selectedService.description}
-                  </p>
-                  <div className="grid grid-cols-3 gap-4 mb-8">
-                    <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Service Type</p>
-                      <p className="font-semibold text-gray-900 dark:text-white capitalize">
-                        {selectedService.service_type}
-                      </p>
+          {currentView === 'service-details' && (
+            selectedService ? (
+              <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <button
+                  onClick={() => setCurrentView('services')}
+                  className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium mb-6"
+                >
+                  ← Back to Services
+                </button>
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-8">
+                  <div className="max-w-2xl">
+                    <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                      {selectedService.title}
+                    </h1>
+                    <p className="text-gray-600 dark:text-gray-300 text-lg mb-6">
+                      {selectedService.description}
+                    </p>
+                    <div className="grid grid-cols-3 gap-4 mb-8">
+                      <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                        <p className="text-sm text-gray-600 dark:text-gray-400">Service Type</p>
+                        <p className="font-semibold text-gray-900 dark:text-white capitalize">
+                          {selectedService.service_type}
+                        </p>
+                      </div>
+                      <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                        <p className="text-sm text-gray-600 dark:text-gray-400">Price</p>
+                        <p className="font-semibold text-gray-900 dark:text-white">
+                          ${selectedService.price.toFixed(2)}
+                        </p>
+                      </div>
+                      <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                        <p className="text-sm text-gray-600 dark:text-gray-400">Duration</p>
+                        <p className="font-semibold text-gray-900 dark:text-white">
+                          {selectedService.duration_minutes || 60} mins
+                        </p>
+                      </div>
                     </div>
-                    <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Price</p>
-                      <p className="font-semibold text-gray-900 dark:text-white">
-                        ${selectedService.price.toFixed(2)}
-                      </p>
-                    </div>
-                    <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Duration</p>
-                      <p className="font-semibold text-gray-900 dark:text-white">
-                        {selectedService.duration_minutes} mins
-                      </p>
-                    </div>
+                    {user && (
+                      <button
+                        onClick={() => setCurrentView('create-ticket')}
+                        className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                      >
+                        Book This Service
+                      </button>
+                    )}
                   </div>
-                  {user && (
-                    <button
-                      onClick={() => setCurrentView('create-ticket')}
-                      className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
-                    >
-                      Book This Service
-                    </button>
-                  )}
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <button
+                  onClick={() => setCurrentView('services')}
+                  className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium mb-6"
+                >
+                  ← Back to Services
+                </button>
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-8 text-center">
+                  <p className="text-gray-600 dark:text-gray-400">No service details available. Please select a service.</p>
+                </div>
+              </div>
+            )
           )}
 
           {currentView === 'find-agents' && (

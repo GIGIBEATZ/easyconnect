@@ -66,7 +66,8 @@ export const ServicesView = ({ onServiceSelect }: ServicesViewProps) => {
     const matchesCategory =
       selectedCategory === 'all' || service.category_id === selectedCategory;
     const matchesLanguage =
-      service.languages_supported.includes(currentLanguage);
+      !service.languages_supported || service.languages_supported.length === 0 ||
+      service.languages_supported.includes(language);
 
     return matchesSearch && matchesCategory && matchesLanguage;
   });

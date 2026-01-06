@@ -14,7 +14,7 @@ interface CreateTicketViewProps {
 
 export const CreateTicketView = ({ onSuccess, onBack }: CreateTicketViewProps) => {
   const { user } = useAuth();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
@@ -69,7 +69,7 @@ export const CreateTicketView = ({ onSuccess, onBack }: CreateTicketViewProps) =
         description: description.trim(),
         category: category,
         priority: priority,
-        language: currentLanguage,
+        language: language,
         status: 'open',
       });
 
