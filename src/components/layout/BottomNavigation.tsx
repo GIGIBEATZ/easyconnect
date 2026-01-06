@@ -28,13 +28,13 @@ export const BottomNavigation = ({ currentView, onViewChange, onMenuToggle }: Bo
       <div className="flex items-center justify-around h-16">
         {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = currentView === item.view;
+          const isActive = 'view' in item && currentView === item.view;
 
           return (
             <button
               key={item.id}
               onClick={() => handleClick(item)}
-              className={`flex flex-col items-center justify-center flex-1 h-full transition-colors ${
+              className={`flex flex-col items-center justify-center flex-1 h-full transition-colors hover:text-blue-500 dark:hover:text-blue-500 ${
                 isActive
                   ? 'text-blue-600 dark:text-blue-400'
                   : 'text-gray-600 dark:text-gray-400'
