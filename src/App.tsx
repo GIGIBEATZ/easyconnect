@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { CartProvider, useCart } from './contexts/CartContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { FavoritesProvider } from './contexts/FavoritesContext';
 import { NotificationsProvider } from './contexts/NotificationsContext';
-import { LanguageProvider } from './contexts/LanguageContext';
+import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
+import { LanguageWelcome } from './components/language/LanguageWelcome';
 import { SignInForm } from './components/auth/SignInForm';
 import { SignUpForm } from './components/auth/SignUpForm';
 import { Sidebar } from './components/layout/Sidebar';
@@ -31,27 +32,40 @@ import { BottomNavigation } from './components/layout/BottomNavigation';
 import { Footer } from './components/layout/Footer';
 import { StaticPage } from './components/pages/StaticPage';
 import { ContactPage } from './components/pages/ContactPage';
+import { ServicesView } from './components/support/ServicesView';
 import { ShoppingCart } from 'lucide-react';
 import type { Database } from './lib/database.types';
 
 type Product = Database['public']['Tables']['products']['Row'];
 type Job = Database['public']['Tables']['jobs']['Row'];
+type SupportService = Database['public']['Tables']['support_services']['Row'];
 
 function AppContent() {
   const { user, loading } = useAuth();
   const { totalItems, addItem } = useCart();
+  const { t } = useLanguage();
   const [showSignUp, setShowSignUp] = useState(false);
   const [currentView, setCurrentView] = useState('home');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [selectedService, setSelectedService] = useState<SupportService | null>(null);
   const [showCartBadge, setShowCartBadge] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [hasSelectedLanguage, setHasSelectedLanguage] = useState(
+    localStorage.getItem('hasSelectedLanguage') === 'true'
+  );
 
   const handleAddToCart = (product: Product) => {
     addItem(product);
     setShowCartBadge(true);
     setTimeout(() => setShowCartBadge(false), 2000);
   };
+
+  if (!hasSelectedLanguage) {
+    return (
+      <LanguageWelcome onLanguageSelect={() => setHasSelectedLanguage(true)} />
+    );
+  }
 
   if (loading) {
     return (
@@ -107,6 +121,15 @@ function AppContent() {
 
       <main>
         {currentView === 'home' && <Hero onViewChange={setCurrentView} />}
+
+        {currentView === 'services' && (
+          <ServicesView
+            onServiceSelect={(service) => {
+              setSelectedService(service);
+              setCurrentView('service-details');
+            }}
+          />
+        )}
 
         {currentView === 'marketplace' && (
           <EnhancedMarketplaceView
