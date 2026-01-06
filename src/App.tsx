@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
-import { CartProvider, useCart } from './contexts/CartContext';
 import { ThemeProvider } from './contexts/ThemeContext';
-import { FavoritesProvider } from './contexts/FavoritesContext';
 import { NotificationsProvider } from './contexts/NotificationsContext';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { LanguageWelcome } from './components/language/LanguageWelcome';
@@ -11,23 +9,6 @@ import { SignUpForm } from './components/auth/SignUpForm';
 import { Sidebar } from './components/layout/Sidebar';
 import { SimplifiedHeader } from './components/layout/SimplifiedHeader';
 import { Hero } from './components/layout/Hero';
-import { EnhancedMarketplaceView } from './components/marketplace/EnhancedMarketplaceView';
-import { ProductDetails } from './components/marketplace/ProductDetails';
-import { ProductForm } from './components/marketplace/ProductForm';
-import { CategoryView } from './components/marketplace/CategoryView';
-import { DealsView } from './components/marketplace/DealsView';
-import { JobsView } from './components/jobs/JobsView';
-import { JobDetails } from './components/jobs/JobDetails';
-import { JobForm } from './components/jobs/JobForm';
-import { Dashboard } from './components/dashboard/Dashboard';
-import { CartView } from './components/cart/CartView';
-import { CheckoutView } from './components/cart/CheckoutView';
-import { MyProducts } from './components/seller/MyProducts';
-import { MyOrders, MyJobs, MyApplications } from './components/management/ManagementViews';
-import { SettingsView } from './components/settings/SettingsView';
-import { WishlistView } from './components/favorites/WishlistView';
-import { OrderHistory } from './components/orders/OrderHistory';
-import { SellerDashboard } from './components/seller/SellerDashboard';
 import { BottomNavigation } from './components/layout/BottomNavigation';
 import { Footer } from './components/layout/Footer';
 import { StaticPage } from './components/pages/StaticPage';
@@ -36,30 +17,25 @@ import { ServicesView } from './components/support/ServicesView';
 import { AgentsView } from './components/support/AgentsView';
 import { CreateTicketView } from './components/support/CreateTicketView';
 import { TicketsView } from './components/support/TicketsView';
-import { ShoppingCart } from 'lucide-react';
+import { SettingsView } from './components/settings/SettingsView';
+import { MessageSquare } from 'lucide-react';
 import type { Database } from './lib/database.types';
 
-type Product = Database['public']['Tables']['products']['Row'];
-type Job = Database['public']['Tables']['jobs']['Row'];
+type SupportService = Database['public']['Tables']['support_services']['Row'];
+type SupportTicket = Database['public']['Tables']['support_tickets']['Row'];
+type Profile = Database['public']['Tables']['profiles']['Row'];
 
 function AppContent() {
   useLanguage();
   const { user, loading } = useAuth();
-  const { totalItems, addItem } = useCart();
   const [showSignUp, setShowSignUp] = useState(false);
   const [currentView, setCurrentView] = useState('home');
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [selectedAgent, setSelectedAgent] = useState<Profile | null>(null);
+  const [selectedTicket, setSelectedTicket] = useState<SupportTicket | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [hasSelectedLanguage, setHasSelectedLanguage] = useState(
     localStorage.getItem('hasSelectedLanguage') === 'true'
   );
-
-  const handleAddToCart = (product: Product) => {
-    addItem(product);
-    setShowCartBadge(true);
-    setTimeout(() => setShowCartBadge(false), 2000);
-  };
 
   if (!hasSelectedLanguage) {
     return (
@@ -69,7 +45,7 @@ function AppContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400 mx-auto mb-4"></div>
           <p className="text-gray-600 dark:text-gray-300">Loading...</p>
@@ -78,13 +54,13 @@ function AppContent() {
     );
   }
 
-  const protectedViews = ['create-ticket', 'tickets', 'my-orders', 'my-products', 'settings', 'wishlist', 'dashboard', 'my-jobs', 'my-applications', 'seller-dashboard', 'cart', 'checkout', 'edit-product', 'add-product'];
+  const protectedViews = ['create-ticket', 'my-tickets', 'settings', 'dashboard'];
 
   const showAuthModal = !user && protectedViews.includes(currentView);
 
   if (showAuthModal) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex">
         <div className="flex-1">
           <SimplifiedHeader
             onViewChange={setCurrentView}
@@ -119,7 +95,7 @@ function AppContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex">
       {user && (
         <Sidebar
           currentView={currentView}
@@ -135,288 +111,177 @@ function AppContent() {
           onMenuToggle={() => setSidebarOpen(!sidebarOpen)}
         />
 
-      {user && (
-        <button
-          onClick={() => setCurrentView('cart')}
-          className="fixed bottom-6 right-6 z-50 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-all hover:scale-110"
-        >
-          <ShoppingCart className="w-6 h-6" />
-          {totalItems > 0 && (
-            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">
-              {totalItems}
+        {user && (
+          <button
+            onClick={() => setCurrentView('create-ticket')}
+            className="fixed bottom-6 right-6 z-50 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-all hover:scale-110 group"
+            title="Create support ticket"
+          >
+            <MessageSquare className="w-6 h-6" />
+            <span className="absolute bottom-full right-0 mb-2 px-3 py-1 bg-gray-900 text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+              Create Ticket
             </span>
+          </button>
+        )}
+
+        <main className="flex-1">
+          {currentView === 'home' && <Hero onViewChange={setCurrentView} />}
+
+          {currentView === 'services' && (
+            <ServicesView
+              onServiceSelect={() => {
+                setCurrentView('services');
+              }}
+            />
           )}
-        </button>
-      )}
 
-      <main>
-        {currentView === 'home' && <Hero onViewChange={setCurrentView} />}
+          {currentView === 'find-experts' && (
+            <AgentsView
+              onAgentSelect={(agent) => {
+                setSelectedAgent(agent);
+                setCurrentView('agent-profile');
+              }}
+              onContactAgent={(agent) => {
+                setSelectedAgent(agent);
+                setCurrentView('create-ticket');
+              }}
+            />
+          )}
 
-        {currentView === 'services' && (
-          <ServicesView
-            onServiceSelect={(service) => {
-              setSelectedService(service);
-              setCurrentView('service-details');
-            }}
-          />
-        )}
+          {currentView === 'my-tickets' && (
+            <TicketsView
+              onTicketSelect={(ticket) => {
+                setSelectedTicket(ticket);
+                setCurrentView('ticket-details');
+              }}
+              onCreateTicket={() => setCurrentView('create-ticket')}
+            />
+          )}
 
-        {currentView === 'find-agents' && (
-          <AgentsView
-            onAgentSelect={(agent) => {
-              setSelectedAgent(agent);
-              setCurrentView('agent-profile');
-            }}
-            onContactAgent={(agent) => {
-              setSelectedAgent(agent);
-              setCurrentView('create-ticket');
-            }}
-          />
-        )}
+          {currentView === 'create-ticket' && (
+            <CreateTicketView
+              onSuccess={() => setCurrentView('my-tickets')}
+              onBack={() => setCurrentView('home')}
+            />
+          )}
 
-        {currentView === 'tickets' && (
-          <TicketsView
-            onTicketSelect={(ticket) => {
-              setSelectedTicket(ticket);
-              setCurrentView('ticket-details');
-            }}
-            onCreateTicket={() => setCurrentView('create-ticket')}
-          />
-        )}
-
-        {currentView === 'create-ticket' && (
-          <CreateTicketView
-            onSuccess={() => setCurrentView('tickets')}
-            onBack={() => setCurrentView('home')}
-          />
-        )}
-
-        {currentView === 'marketplace' && (
-          <EnhancedMarketplaceView
-            onProductSelect={(product) => {
-              setSelectedProduct(product);
-              setCurrentView('product-details');
-            }}
-            onAddProduct={() => setCurrentView('add-product')}
-            onAddToCart={handleAddToCart}
-          />
-        )}
-
-        {currentView === 'product-details' && selectedProduct && (
-          <ProductDetails
-            product={selectedProduct}
-            onBack={() => setCurrentView('marketplace')}
-            onAddToCart={handleAddToCart}
-          />
-        )}
-
-        {currentView === 'add-product' && (
-          <ProductForm
-            onBack={() => setCurrentView('marketplace')}
-            onSuccess={() => setCurrentView('marketplace')}
-          />
-        )}
-
-        {currentView === 'jobs' && (
-          <JobsView
-            onJobSelect={(job) => {
-              setSelectedJob(job);
-              setCurrentView('job-details');
-            }}
-            onAddJob={() => setCurrentView('add-job')}
-          />
-        )}
-
-        {currentView === 'job-details' && selectedJob && (
-          <JobDetails
-            job={selectedJob}
-            onBack={() => setCurrentView('jobs')}
-          />
-        )}
-
-        {currentView === 'add-job' && (
-          <JobForm
-            onBack={() => setCurrentView('jobs')}
-            onSuccess={() => setCurrentView('jobs')}
-          />
-        )}
-
-        {currentView === 'messages' && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-6">Messages</h1>
-            <div className="bg-white rounded-lg shadow-sm p-8 text-center">
-              <p className="text-gray-600">Messaging system coming soon</p>
-            </div>
-          </div>
-        )}
-
-        {currentView === 'notifications' && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-6">Notifications</h1>
-            <div className="bg-white rounded-lg shadow-sm p-8 text-center">
-              <p className="text-gray-600">No new notifications</p>
-            </div>
-          </div>
-        )}
-
-        {currentView === 'dashboard' && (
-          <Dashboard onViewChange={setCurrentView} />
-        )}
-
-        {currentView === 'cart' && (
-          <CartView
-            onCheckout={() => setCurrentView('checkout')}
-            onContinueShopping={() => setCurrentView('marketplace')}
-          />
-        )}
-
-        {currentView === 'checkout' && (
-          <CheckoutView
-            onBack={() => setCurrentView('cart')}
-            onSuccess={() => {
-              setCurrentView('order-success');
-            }}
-          />
-        )}
-
-        {currentView === 'order-success' && (
-          <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="bg-white rounded-lg shadow-sm p-8 text-center">
-              <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4">
-                <svg className="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Order Placed Successfully!</h2>
-              <p className="text-gray-600 mb-8">Thank you for your purchase. You will receive a confirmation email shortly.</p>
-              <div className="flex gap-4 justify-center">
-                <button
-                  onClick={() => setCurrentView('my-orders')}
-                  className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
-                >
-                  View Orders
-                </button>
-                <button
-                  onClick={() => setCurrentView('marketplace')}
-                  className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
-                >
-                  Continue Shopping
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {currentView === 'my-products' && (
-          <MyProducts
-            onAddProduct={() => setCurrentView('add-product')}
-            onEditProduct={(product) => {
-              setSelectedProduct(product);
-              setCurrentView('edit-product');
-            }}
-            onViewProduct={(product) => {
-              setSelectedProduct(product);
-              setCurrentView('product-details');
-            }}
-          />
-        )}
-
-        {currentView === 'edit-product' && selectedProduct && (
-          <ProductForm
-            product={selectedProduct}
-            onBack={() => setCurrentView('my-products')}
-            onSuccess={() => setCurrentView('my-products')}
-          />
-        )}
-
-        {currentView === 'my-orders' && <MyOrders />}
-
-        {currentView === 'my-jobs' && (
-          <MyJobs
-            onEditJob={(job) => {
-              setSelectedJob(job);
-              setCurrentView('edit-job');
-            }}
-            onViewApplications={(job) => {
-              setSelectedJob(job);
-              setCurrentView('view-applications');
-            }}
-          />
-        )}
-
-        {currentView === 'edit-job' && selectedJob && (
-          <JobForm
-            job={selectedJob}
-            onBack={() => setCurrentView('my-jobs')}
-            onSuccess={() => setCurrentView('my-jobs')}
-          />
-        )}
-
-        {currentView === 'my-applications' && <MyApplications />}
-
-        {currentView === 'view-applications' && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-8 text-center">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Job Applications</h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">Application management interface coming soon</p>
+          {currentView === 'ticket-details' && selectedTicket && (
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
               <button
-                onClick={() => setCurrentView('my-jobs')}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                onClick={() => setCurrentView('my-tickets')}
+                className="mb-6 text-blue-600 dark:text-blue-400 hover:underline"
               >
-                Back to My Jobs
+                ← Back to Tickets
               </button>
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                  Ticket #{selectedTicket.ticket_number}
+                </h1>
+                <div className="space-y-4">
+                  <div>
+                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{selectedTicket.title}</h2>
+                    <p className="text-gray-600 dark:text-gray-400">{selectedTicket.description}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className={`px-3 py-1 rounded text-sm font-medium ${
+                      selectedTicket.status === 'resolved' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
+                      selectedTicket.status === 'in_progress' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
+                      'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+                    }`}>
+                      {selectedTicket.status}
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {currentView === 'settings' && <SettingsView />}
+          {currentView === 'agent-profile' && selectedAgent && (
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+              <button
+                onClick={() => setCurrentView('find-experts')}
+                className="mb-6 text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                ← Back to Experts
+              </button>
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-8">
+                <div className="flex items-start gap-6">
+                  {selectedAgent.avatar_url && (
+                    <img
+                      src={selectedAgent.avatar_url}
+                      alt={selectedAgent.full_name}
+                      className="w-24 h-24 rounded-full object-cover"
+                    />
+                  )}
+                  <div className="flex-1">
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                      {selectedAgent.full_name}
+                    </h1>
+                    <p className="text-gray-600 dark:text-gray-400 mb-4">{selectedAgent.bio}</p>
+                    <div className="grid grid-cols-2 gap-4 mb-6">
+                      <div>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">Rating</p>
+                        <p className="text-lg font-semibold text-gray-900 dark:text-white">
+                          {selectedAgent.agent_rating}/5.0
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">Tickets Resolved</p>
+                        <p className="text-lg font-semibold text-gray-900 dark:text-white">
+                          {selectedAgent.total_tickets_resolved}
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setCurrentView('create-ticket')}
+                      className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                    >
+                      Request Support
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
-        {currentView === 'wishlist' && (
-          <WishlistView
-            onProductSelect={(product) => {
-              setSelectedProduct(product);
-              setCurrentView('product-details');
-            }}
-          />
-        )}
+          {currentView === 'settings' && <SettingsView />}
 
-        {currentView === 'categories' && (
-          <CategoryView
-            onProductSelect={(product) => {
-              setSelectedProduct(product);
-              setCurrentView('product-details');
-            }}
-            onBack={() => setCurrentView('marketplace')}
-            onAddToCart={handleAddToCart}
-          />
-        )}
+          {currentView === 'dashboard' && user && (
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Dashboard</h1>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+                  <h3 className="text-gray-600 dark:text-gray-400 text-sm font-medium mb-2">Active Tickets</h3>
+                  <p className="text-3xl font-bold text-gray-900 dark:text-white">0</p>
+                </div>
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+                  <h3 className="text-gray-600 dark:text-gray-400 text-sm font-medium mb-2">Resolved</h3>
+                  <p className="text-3xl font-bold text-gray-900 dark:text-white">0</p>
+                </div>
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+                  <h3 className="text-gray-600 dark:text-gray-400 text-sm font-medium mb-2">Avg Response Time</h3>
+                  <p className="text-3xl font-bold text-gray-900 dark:text-white">–</p>
+                </div>
+              </div>
+            </div>
+          )}
 
-        {currentView === 'deals' && (
-          <DealsView
-            onProductSelect={(product) => {
-              setSelectedProduct(product);
-              setCurrentView('product-details');
-            }}
-            onBack={() => setCurrentView('marketplace')}
-            onAddToCart={handleAddToCart}
-          />
-        )}
+          {['about', 'help', 'terms', 'privacy', 'contact-terms', 'faq', 'guides', 'careers', 'blog', 'security', 'reliability', 'compliance'].includes(currentView) && (
+            <StaticPage slug={currentView} onBack={() => setCurrentView('home')} />
+          )}
 
-        {currentView === 'order-history' && (
-          <OrderHistory onBack={() => setCurrentView('my-orders')} />
-        )}
+          {currentView === 'contact' && (
+            <ContactPage onBack={() => setCurrentView('home')} />
+          )}
 
-        {currentView === 'seller-dashboard' && (
-          <SellerDashboard onViewChange={setCurrentView} />
-        )}
-
-        {['about', 'help', 'terms', 'privacy', 'refund-policy', 'guidelines', 'careers', 'blog', 'press', 'affiliate', 'advertise', 'partnerships', 'payment-methods', 'wallet', 'gift-cards', 'premium', 'business', 'shipping-info', 'returns', 'cookies', 'seller-signup'].includes(currentView) && (
-          <StaticPage slug={currentView} onBack={() => setCurrentView('home')} />
-        )}
-
-        {currentView === 'contact' && (
-          <ContactPage onBack={() => setCurrentView('home')} />
-        )}
+          {currentView === 'messages' && (
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">Messages</h1>
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-8 text-center">
+                <p className="text-gray-600 dark:text-gray-400">Messaging system coming soon</p>
+              </div>
+            </div>
+          )}
         </main>
 
         <Footer onViewChange={setCurrentView} />
@@ -437,11 +302,7 @@ function App() {
       <LanguageProvider>
         <ThemeProvider>
           <NotificationsProvider>
-            <FavoritesProvider>
-              <CartProvider>
-                <AppContent />
-              </CartProvider>
-            </FavoritesProvider>
+            <AppContent />
           </NotificationsProvider>
         </ThemeProvider>
       </LanguageProvider>

@@ -1,12 +1,9 @@
 import { useState } from 'react';
 import {
-  Home, ShoppingBag, Briefcase, Heart, ShoppingCart, Package,
-  TrendingUp, MessageSquare, User, Settings, ChevronRight,
-  ChevronDown, X
+  Home, Users, MessageSquare, User, Settings, ChevronRight,
+  ChevronDown, X, Headphones, Zap
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { useCart } from '../../contexts/CartContext';
-import { useFavorites } from '../../contexts/FavoritesContext';
 import { useNotifications } from '../../contexts/NotificationsContext';
 import { LanguageSelector } from '../language/LanguageSelector';
 
@@ -19,7 +16,6 @@ interface SidebarItem {
   badge?: number;
   children?: SidebarItem[];
   requiresAuth?: boolean;
-  requiresRole?: string;
 }
 
 interface SidebarProps {
@@ -31,13 +27,8 @@ interface SidebarProps {
 
 export const Sidebar = ({ currentView, onViewChange, isOpen, onClose }: SidebarProps) => {
   const { profile } = useAuth();
-  const { totalItems } = useCart();
-  const { favoriteProducts } = useFavorites();
   const { unreadCount } = useNotifications();
   const [expandedMenus, setExpandedMenus] = useState<Set<string>>(new Set());
-
-  const isSeller = profile?.roles.includes('seller');
-  const isEmployer = profile?.roles.includes('employer');
 
   const menuItems: SidebarItem[] = [
     {
@@ -48,72 +39,24 @@ export const Sidebar = ({ currentView, onViewChange, isOpen, onClose }: SidebarP
       color: 'bg-blue-500',
     },
     {
-      id: 'marketplace',
-      label: 'Marketplace',
-      icon: ShoppingBag,
-      view: 'marketplace',
+      id: 'services',
+      label: 'Services',
+      icon: Zap,
+      view: 'services',
+      color: 'bg-amber-500',
+      children: [
+        { id: 'all-services', label: 'Browse Services', icon: Zap, view: 'services', color: 'bg-amber-500' },
+        { id: 'find-experts', label: 'Find Experts', icon: Users, view: 'find-experts', color: 'bg-cyan-500' },
+      ],
+    },
+    {
+      id: 'my-tickets',
+      label: 'My Tickets',
+      icon: Headphones,
+      view: 'my-tickets',
       color: 'bg-green-500',
-      children: [
-        { id: 'all-products', label: 'All Products', icon: ShoppingBag, view: 'marketplace', color: 'bg-green-500' },
-        { id: 'categories', label: 'Categories', icon: ShoppingBag, view: 'categories', color: 'bg-green-500' },
-        { id: 'deals', label: 'Deals & Discounts', icon: TrendingUp, view: 'deals', color: 'bg-green-500' },
-      ],
-    },
-    {
-      id: 'jobs',
-      label: 'Jobs',
-      icon: Briefcase,
-      view: 'jobs',
-      color: 'bg-purple-500',
-      children: [
-        { id: 'browse-jobs', label: 'Browse Jobs', icon: Briefcase, view: 'jobs', color: 'bg-purple-500' },
-        { id: 'my-applications', label: 'My Applications', icon: Briefcase, view: 'my-applications', color: 'bg-purple-500', requiresAuth: true },
-        { id: 'saved-jobs', label: 'Saved Jobs', icon: Heart, view: 'saved-jobs', color: 'bg-purple-500', requiresAuth: true },
-        { id: 'post-job', label: 'Post a Job', icon: Briefcase, view: 'post-job', color: 'bg-purple-500', requiresAuth: true },
-      ],
-    },
-    {
-      id: 'wishlist',
-      label: 'Wishlist',
-      icon: Heart,
-      view: 'wishlist',
-      color: 'bg-red-500',
-      badge: favoriteProducts.length,
+      badge: unreadCount,
       requiresAuth: true,
-    },
-    {
-      id: 'cart',
-      label: 'Cart',
-      icon: ShoppingCart,
-      view: 'cart',
-      color: 'bg-orange-500',
-      badge: totalItems,
-    },
-    {
-      id: 'orders',
-      label: 'Orders',
-      icon: Package,
-      view: 'my-orders',
-      color: 'bg-indigo-500',
-      requiresAuth: true,
-      children: [
-        { id: 'active-orders', label: 'Active Orders', icon: Package, view: 'my-orders', color: 'bg-indigo-500' },
-        { id: 'order-history', label: 'Order History', icon: Package, view: 'order-history', color: 'bg-indigo-500' },
-      ],
-    },
-    {
-      id: 'selling',
-      label: 'Selling',
-      icon: TrendingUp,
-      view: 'seller-dashboard',
-      color: 'bg-teal-500',
-      requiresAuth: true,
-      requiresRole: 'seller',
-      children: [
-        { id: 'seller-dashboard', label: 'Dashboard', icon: TrendingUp, view: 'seller-dashboard', color: 'bg-teal-500' },
-        { id: 'my-products', label: 'My Products', icon: ShoppingBag, view: 'my-products', color: 'bg-teal-500' },
-        { id: 'add-product', label: 'Add Product', icon: ShoppingBag, view: 'add-product', color: 'bg-teal-500' },
-      ],
     },
     {
       id: 'messages',
@@ -121,7 +64,6 @@ export const Sidebar = ({ currentView, onViewChange, isOpen, onClose }: SidebarP
       icon: MessageSquare,
       view: 'messages',
       color: 'bg-pink-500',
-      badge: unreadCount,
       requiresAuth: true,
     },
     {
@@ -131,10 +73,6 @@ export const Sidebar = ({ currentView, onViewChange, isOpen, onClose }: SidebarP
       view: 'profile',
       color: 'bg-gray-500',
       requiresAuth: true,
-      children: [
-        { id: 'my-profile', label: 'My Profile', icon: User, view: 'profile', color: 'bg-gray-500' },
-        { id: 'browsing-history', label: 'Browsing History', icon: Home, view: 'browsing-history', color: 'bg-gray-500' },
-      ],
     },
     {
       id: 'settings',
@@ -169,8 +107,6 @@ export const Sidebar = ({ currentView, onViewChange, isOpen, onClose }: SidebarP
 
   const filteredMenuItems = menuItems.filter(item => {
     if (item.requiresAuth && !profile) return false;
-    if (item.requiresRole === 'seller' && !isSeller) return false;
-    if (item.requiresRole === 'employer' && !isEmployer) return false;
     return true;
   });
 
@@ -239,7 +175,7 @@ export const Sidebar = ({ currentView, onViewChange, isOpen, onClose }: SidebarP
         }`}
       >
         <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-          <h1 className="text-2xl font-bold text-blue-600 dark:text-blue-400">MarketHub</h1>
+          <h1 className="text-2xl font-bold text-blue-600 dark:text-blue-400">TechAssist</h1>
           <button
             onClick={onClose}
             className="lg:hidden p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"

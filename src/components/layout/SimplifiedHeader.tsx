@@ -1,9 +1,8 @@
 import { useAuth } from '../../contexts/AuthContext';
-import { Search, ShoppingCart, User, LogOut, Settings, Heart, Menu } from 'lucide-react';
+import { Search, User, LogOut, Settings, Menu } from 'lucide-react';
 import { useState } from 'react';
 import { ThemeToggle } from '../theme/ThemeToggle';
 import { NotificationDropdown } from '../notifications/NotificationDropdown';
-import { useCart } from '../../contexts/CartContext';
 import { LanguageSelector } from '../language/LanguageSelector';
 
 interface SimplifiedHeaderProps {
@@ -13,14 +12,13 @@ interface SimplifiedHeaderProps {
 
 export const SimplifiedHeader = ({ onViewChange, onMenuToggle }: SimplifiedHeaderProps) => {
   const { profile, signOut } = useAuth();
-  const { totalItems } = useCart();
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      onViewChange('marketplace');
+      onViewChange('services');
     }
   };
 
@@ -43,7 +41,7 @@ export const SimplifiedHeader = ({ onViewChange, onMenuToggle }: SimplifiedHeade
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search products, jobs, and more..."
+                  placeholder="Search support services..."
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
@@ -56,18 +54,6 @@ export const SimplifiedHeader = ({ onViewChange, onMenuToggle }: SimplifiedHeade
             <ThemeToggle />
 
             <NotificationDropdown onViewAll={() => onViewChange('notifications')} />
-
-            <button
-              onClick={() => onViewChange('cart')}
-              className="relative p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
-            >
-              <ShoppingCart className="w-6 h-6" />
-              {totalItems > 0 && (
-                <span className="absolute top-0 right-0 bg-orange-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                  {totalItems > 9 ? '9+' : totalItems}
-                </span>
-              )}
-            </button>
 
             {profile ? (
               <div className="relative">
@@ -105,16 +91,6 @@ export const SimplifiedHeader = ({ onViewChange, onMenuToggle }: SimplifiedHeade
                       My Profile
                     </button>
 
-                    <button
-                      onClick={() => {
-                        onViewChange('wishlist');
-                        setProfileMenuOpen(false);
-                      }}
-                      className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center"
-                    >
-                      <Heart className="w-4 h-4 mr-2" />
-                      Wishlist
-                    </button>
 
                     <button
                       onClick={() => {
