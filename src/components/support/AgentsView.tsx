@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Search, Filter, Star, MapPin, Headphones, MessageCircle } from 'lucide-react';
+import { Search, Filter, Star, MapPin, Headphones, MessageCircle, DollarSign } from 'lucide-react';
 import type { Database } from '../../lib/database.types';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { AgentPricingCard } from '../pricing/AgentPricingCard';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
+type AgentPricingProfile = Database['public']['Tables']['agent_pricing_profiles']['Row'];
 
 interface AgentsViewProps {
   onAgentSelect: (agent: Profile) => void;
@@ -15,6 +17,7 @@ interface AgentsViewProps {
 export const AgentsView = ({ onAgentSelect, onContactAgent }: AgentsViewProps) => {
   const { t } = useLanguage();
   const [agents, setAgents] = useState<Profile[]>([]);
+  const [pricingProfiles, setPricingProfiles] = useState<Record<string, AgentPricingProfile>>({});
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSpecialization, setSelectedSpecialization] = useState<string>('all');
@@ -47,6 +50,21 @@ export const AgentsView = ({ onAgentSelect, onContactAgent }: AgentsViewProps) =
 
       if (error) throw error;
       setAgents(data || []);
+
+      if (data && data.length > 0) {
+        const { data: pricingData } = await supabase
+          .from('agent_pricing_profiles')
+          .select('*')
+          .in('agent_id', data.map(a => a.id));
+
+        if (pricingData) {
+          const priceMap = pricingData.reduce((acc, price) => {
+            acc[price.agent_id] = price;
+            return acc;
+          }, {} as Record<string, AgentPricingProfile>);
+          setPricingProfiles(priceMap);
+        }
+      }
     } catch (error) {
       console.error('Error loading agents:', error);
     } finally {
@@ -223,6 +241,16 @@ export const AgentsView = ({ onAgentSelect, onContactAgent }: AgentsViewProps) =
                         </span>
                       )}
                     </div>
+                  </div>
+                )}
+
+                {pricingProfiles[agent.id] && (
+                  <div className="mb-4">
+                    <AgentPricingCard
+                      agent={agent}
+                      pricing={pricingProfiles[agent.id]}
+                      onGetQuote={() => onContactAgent(agent)}
+                    />
                   </div>
                 )}
 

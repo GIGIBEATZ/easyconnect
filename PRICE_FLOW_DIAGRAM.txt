@@ -1,0 +1,243 @@
+═══════════════════════════════════════════════════════════════════════════════
+                    PRICE NEGOTIATION WORKFLOW DIAGRAM
+═══════════════════════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              CLIENT JOURNEY                                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+    1. BROWSE
+    ┌─────────────────────────────────────┐
+    │  Visit Services / Find Agents Page  │
+    │                                     │
+    │  See:                               │
+    │  • Service names & descriptions    │
+    │  • Agent profiles                  │
+    │  • Hourly rates displayed          │
+    │  • Minimum charges shown           │
+    │  • Agent ratings & experience      │
+    └─────────────────────────────────────┘
+              │
+              ▼
+    2. SELECT & REQUEST
+    ┌─────────────────────────────────────┐
+    │  Click Agent / Service              │
+    │  Click "Get Price Quote"            │
+    │  OR "Contact" button                │
+    └─────────────────────────────────────┘
+              │
+              ▼
+    3. VIEW PRICING OPTIONS
+    ┌─────────────────────────────────────┐
+    │  Modal Shows:                       │
+    │                                     │
+    │  Option A: Send Proposal            │
+    │  Option B: Use Fixed Price          │
+    │  Option C: Cancel                   │
+    └─────────────────────────────────────┘
+              │
+    ┌─────────┴─────────┐
+    │                   │
+    ▼                   ▼
+ PATH A: PROPOSAL   PATH B: FIXED
+ 
+    4A. VIEW PROPOSAL
+    ┌─────────────────────────────────────┐
+    │  Agent sends proposal with:         │
+    │                                     │
+    │  ✓ Diagnosis: $25                   │
+    │  ✓ Labor (2hrs): $100               │
+    │  ✓ Parts: $50                       │
+    │  ─────────────────                  │
+    │  Subtotal: $175                     │
+    │  Discount: -$0                      │
+    │  Total: $175                        │
+    │                                     │
+    │  Expires in: 24 hours               │
+    │  Terms: Due before service          │
+    └─────────────────────────────────────┘
+              │
+              ▼
+    5A. CLIENT DECIDES
+    ┌─────────────────────────────────────┐
+    │  [Accept] [Counter] [Reject]        │
+    │                                     │
+    │  If Accept → Go to step 7           │
+    │  If Counter → Go to step 6          │
+    │  If Reject → Browse other agents    │
+    └─────────────────────────────────────┘
+              │
+              ▼
+    6. NEGOTIATION CHAT
+    ┌─────────────────────────────────────┐
+    │  Chat-style Negotiations            │
+    │                                     │
+    │  Client: $175 → "$120?"             │
+    │  Agent:  $175 → "Counter: $150"     │
+    │  Client: $150 → "Counter: $135"     │
+    │  Agent:  $135 → "Accept ✓"          │
+    │                                     │
+    │  History tracked, timestamps shown  │
+    └─────────────────────────────────────┘
+              │
+              ▼
+    7. FINAL CONFIRMATION
+    ┌─────────────────────────────────────┐
+    │  PRICE CONFIRMED                    │
+    │                                     │
+    │  ✓ Final Price: $135                │
+    │  ✓ Both Parties Agreed              │
+    │  ✓ Payment: Due before service      │
+    │                                     │
+    │  [Edit Price] [Create Ticket]       │
+    │                                     │
+    │  ⚠ Price is LOCKED after ticket     │
+    │    creation - cannot be changed     │
+    └─────────────────────────────────────┘
+              │
+              ▼
+    8. TICKET CREATED
+    ┌─────────────────────────────────────┐
+    │  Support Ticket #12345              │
+    │                                     │
+    │  Price: $135 (locked)               │
+    │  Status: Open                       │
+    │  Agent: John Smith                  │
+    │                                     │
+    │  Work begins at agreed rate         │
+    │  Invoice will match $135            │
+    │  No surprises!                      │
+    └─────────────────────────────────────┘
+
+════════════════════════════════════════════════════════════════════════════════
+                            DATABASE TRANSACTIONS
+════════════════════════════════════════════════════════════════════════════════
+
+Event Timeline:
+
+1. Browse Agents
+   └─→ SELECT * FROM agent_pricing_profiles
+
+2. Agent Sends Proposal
+   └─→ INSERT INTO price_proposals (status: 'sent')
+   └─→ INSERT INTO price_negotiation_history (action: 'proposed')
+
+3. Client Counters
+   └─→ UPDATE price_proposals (status: 'counter_offered')
+   └─→ INSERT INTO price_negotiation_history (action: 'countered')
+
+4. Agent Accepts Counter
+   └─→ UPDATE price_proposals (status: 'accepted')
+   └─→ INSERT INTO price_negotiation_history (action: 'accepted')
+
+5. Create Ticket
+   └─→ INSERT INTO support_tickets (agreed_price: 13500)
+   └─→ INSERT INTO agreed_pricing (final_price: 13500)
+   └─→ UPDATE price_proposals (ticket_id: set, status: 'finalized')
+
+════════════════════════════════════════════════════════════════════════════════
+                           SECURITY & AUDIT TRAIL
+════════════════════════════════════════════════════════════════════════════════
+
+Price Proposal Status Flow:
+                    
+    draft ──send──→ sent
+      ▲              │
+      │          ┌───┴───┐
+      │          ▼       ▼
+      │       counter rejected
+      │          │
+      └──────────┴──→ accepted (FINAL LOCK)
+
+Audit Trail (price_negotiation_history):
+
+    Timestamp      | From      | To       | Action    | Amount
+    ───────────────┼───────────┼──────────┼───────────┼─────────
+    2024-01-06 10:00 | Agent    | Client   | proposed  | $175
+    2024-01-06 10:15 | Client   | Agent    | countered | $120
+    2024-01-06 10:20 | Agent    | Client   | countered | $150
+    2024-01-06 10:25 | Client   | Agent    | countered | $135
+    2024-01-06 10:30 | Agent    | Client   | accepted  | $135 ✓
+
+════════════════════════════════════════════════════════════════════════════════
+                         DATA STORAGE (ALL IN CENTS)
+════════════════════════════════════════════════════════════════════════════════
+
+Storage Format:    Display Format:        SQL Value:
+──────────────────────────────────────────────────
+$50.00        =    5000 cents        =    5000
+$135.99       =    13599 cents       =    13599
+$0.50         =    50 cents          =    50
+$1000.00      =    100000 cents      =    100000
+
+Calculation Example:
+    Agent hourly rate: $50/hour (5000 cents)
+    Hours estimated: 2 hours
+    Labor cost: 5000 * 2 = 10000 cents = $100
+
+════════════════════════════════════════════════════════════════════════════════
+                        COMPONENT INTERACTION MAP
+════════════════════════════════════════════════════════════════════════════════
+
+AgentsView
+    │
+    ├─→ Shows: AgentPricingCard
+    │          ├─ Displays rates
+    │          └─ "Get Price Quote" button
+    │
+    └─→ Triggers: PriceSelectionFlow
+              │
+              ├─ Step 1: Select Method
+              │
+              ├─ Step 2A: PriceProposalModal
+              │           └─ Creates itemized quote
+              │
+              ├─ Step 2B: Fixed Price
+              │           └─ Use agent's hourly rate
+              │
+              ├─ Step 3: PriceNegotiationChat
+              │          ├─ Display offers
+              │          ├─ Accept/counter buttons
+              │          └─ Track history
+              │
+              └─ Step 4: AgreedPricingConfirmation
+                         ├─ Final review
+                         ├─ Lock price
+                         └─ Create ticket
+
+════════════════════════════════════════════════════════════════════════════════
+                            HAPPY PATH EXAMPLE
+════════════════════════════════════════════════════════════════════════════════
+
+1. CLIENT BROWSING
+   • Visits "Find Agents"
+   • Sees John Smith (Rating: 4.8/5)
+   • Price Card Shows: $50/hr, Min: $25
+
+2. CLIENT CLICKS "GET QUOTE"
+   • Describes problem: "Windows laptop runs slow"
+
+3. AGENT SENDS PROPOSAL
+   • Diagnosis & testing: $25
+   • 1 hour labor: $50
+   • Cleanup software: Free
+   • Total: $75
+   • Expires: 24 hours
+   • Terms: Due before service
+
+4. CLIENT REVIEWS
+   • Fair price for the work
+   • Clicks: [Accept ✓]
+
+5. PRICE LOCKED
+   • $75 final price
+   • Both parties confirmed
+   • Ticket #1001 created
+
+6. SERVICE BEGINS
+   • Agent logs in: $75 locked
+   • Client knows exact cost
+   • No price surprises
+   • Invoice = $75 exactly
+
+════════════════════════════════════════════════════════════════════════════════

@@ -46,14 +46,14 @@ export const Sidebar = ({ currentView, onViewChange, isOpen, onClose }: SidebarP
       color: 'bg-amber-500',
       children: [
         { id: 'all-services', label: 'Browse Services', icon: Zap, view: 'services', color: 'bg-amber-500' },
-        { id: 'find-experts', label: 'Find Experts', icon: Users, view: 'find-experts', color: 'bg-cyan-500' },
+        { id: 'find-agents', label: 'Find Agents', icon: Users, view: 'find-agents', color: 'bg-cyan-500' },
       ],
     },
     {
-      id: 'my-tickets',
+      id: 'tickets',
       label: 'My Tickets',
       icon: Headphones,
-      view: 'my-tickets',
+      view: 'tickets',
       color: 'bg-green-500',
       badge: unreadCount,
       requiresAuth: true,

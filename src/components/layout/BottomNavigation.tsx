@@ -10,8 +10,8 @@ export const BottomNavigation = ({ currentView, onViewChange, onMenuToggle }: Bo
   const navItems = [
     { id: 'home', label: 'Home', icon: Home, view: 'home' },
     { id: 'services', label: 'Services', icon: Headphones, view: 'services' },
-    { id: 'experts', label: 'Experts', icon: Users, view: 'find-experts' },
-    { id: 'messages', label: 'Messages', icon: MessageSquare, view: 'messages' },
+    { id: 'agents', label: 'Agents', icon: Users, view: 'find-agents' },
+    { id: 'tickets', label: 'Tickets', icon: MessageSquare, view: 'tickets' },
     { id: 'more', label: 'More', icon: Menu, action: 'menu' },
   ];
 
