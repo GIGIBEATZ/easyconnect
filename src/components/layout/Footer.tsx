@@ -29,45 +29,45 @@ export const Footer = ({ onViewChange }: FooterProps) => {
 
   const footerSections: FooterSection[] = [
     {
-      title: 'About MarketHub',
+      title: 'About Tech Support',
       links: [
         { label: 'About Us', view: 'about' },
-        { label: 'Careers', view: 'careers' },
-        { label: 'Blog', view: 'blog' },
+        { label: 'Our Team', view: 'team' },
+        { label: 'Blog & Articles', view: 'blog' },
         { label: 'Press & Media', view: 'press' },
-        { label: 'Community Guidelines', view: 'guidelines' },
+        { label: 'Company Values', view: 'values' },
         { label: 'Terms of Service', view: 'terms' },
       ],
     },
     {
-      title: 'Make Money with Us',
+      title: 'Services & Support',
       links: [
-        { label: 'Sell Products', view: 'add-product', requiresAuth: true },
-        { label: 'Become a Seller', view: 'seller-signup' },
-        { label: 'Post a Job', view: 'post-job', requiresAuth: true },
-        { label: 'Become an Affiliate', view: 'affiliate' },
-        { label: 'Advertise Your Products', view: 'advertise' },
+        { label: 'Browse Services', view: 'services' },
+        { label: 'Find Support Agents', view: 'find-agents' },
+        { label: 'Knowledge Base', view: 'kb' },
+        { label: 'Service FAQs', view: 'faq' },
+        { label: 'Service Pricing', view: 'pricing' },
+        { label: 'Schedule a Call', view: 'services', requiresAuth: true },
+      ],
+    },
+    {
+      title: 'For Our Agents',
+      links: [
+        { label: 'Agent Portal', view: 'dashboard', requiresAuth: true },
+        { label: 'Apply to Join', view: 'apply-agent' },
+        { label: 'Agent Guidelines', view: 'agent-guidelines' },
+        { label: 'Training Resources', view: 'training' },
+        { label: 'Commission Structure', view: 'commission' },
         { label: 'Partner with Us', view: 'partnerships' },
       ],
     },
     {
-      title: 'Payment & Services',
-      links: [
-        { label: 'Payment Methods', view: 'payment-methods' },
-        { label: 'Wallet & Balance', view: 'wallet', requiresAuth: true },
-        { label: 'Gift Cards', view: 'gift-cards' },
-        { label: 'Refund Policy', view: 'refund-policy' },
-        { label: 'Premium Membership', view: 'premium' },
-        { label: 'Business Accounts', view: 'business' },
-      ],
-    },
-    {
-      title: 'Let Us Help You',
+      title: 'Help & Contact',
       links: [
         { label: 'Your Account', view: 'profile', requiresAuth: true },
-        { label: 'Your Orders', view: 'my-orders', requiresAuth: true },
-        { label: 'Shipping & Policies', view: 'shipping-info' },
-        { label: 'Returns & Replacements', view: 'returns' },
+        { label: 'Your Tickets', view: 'tickets', requiresAuth: true },
+        { label: 'Support Policies', view: 'policies' },
+        { label: 'Refund Policy', view: 'refund-policy' },
         { label: 'Help Center', view: 'help' },
         { label: 'Contact Us', view: 'contact' },
       ],
@@ -245,7 +245,7 @@ export const Footer = ({ onViewChange }: FooterProps) => {
               </button>
             </div>
             <p className="text-center md:text-right">
-              © {new Date().getFullYear()} MarketHub. All rights reserved.
+              © {new Date().getFullYear()} Tech Support Assistant. All rights reserved.
             </p>
           </div>
         </div>
