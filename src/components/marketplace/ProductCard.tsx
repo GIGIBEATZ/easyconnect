@@ -1,4 +1,4 @@
-import { ShoppingCart, Star } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 import type { Database } from '../../lib/database.types';
 import { FavoriteButton } from '../favorites/FavoriteButton';
 

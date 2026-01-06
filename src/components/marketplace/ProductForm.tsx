@@ -67,13 +67,6 @@ export const ProductForm = ({ product, onBack, onSuccess }: ProductFormProps) =>
     });
   };
 
-  const handleUpdateField = (field: string, value: any) => {
-    setFormData({
-      ...formData,
-      [field]: value,
-    });
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');

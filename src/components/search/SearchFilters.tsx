@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { X, ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 export interface ProductFilters {
   minPrice: number;

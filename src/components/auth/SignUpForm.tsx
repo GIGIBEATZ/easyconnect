@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { UserPlus, Eye, EyeOff, Check, X, Users, Headphones } from 'lucide-react';
-import { useLanguage } from '../../contexts/LanguageContext';
 
 interface SignUpFormProps {
   onToggleForm: () => void;
@@ -9,7 +8,6 @@ interface SignUpFormProps {
 
 export const SignUpForm = ({ onToggleForm }: SignUpFormProps) => {
   const { signUp } = useAuth();
-  const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');

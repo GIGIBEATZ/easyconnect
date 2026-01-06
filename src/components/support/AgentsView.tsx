@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Search, Filter, Star, MapPin, Headphones, MessageCircle, Video } from 'lucide-react';
+import { Search, Filter, Star, MapPin, Headphones, MessageCircle } from 'lucide-react';
 import type { Database } from '../../lib/database.types';
 import { useLanguage } from '../../contexts/LanguageContext';
 

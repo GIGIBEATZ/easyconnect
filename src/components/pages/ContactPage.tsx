@@ -7,7 +7,7 @@ interface ContactPageProps {
 }
 
 export const ContactPage = ({ onBack }: ContactPageProps) => {
-  const { user, profile } = useAuth();
+  const { profile } = useAuth();
   const [formData, setFormData] = useState({
     name: profile?.full_name || '',
     email: profile?.email || '',

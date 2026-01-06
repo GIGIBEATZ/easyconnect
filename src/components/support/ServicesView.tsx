@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Monitor, Wifi, Shield, Cloud, Smartphone, Code, Search, Filter } from 'lucide-react';
+import { Monitor, Wifi, Shield, Smartphone, Code, Search, Filter } from 'lucide-react';
 import type { Database } from '../../lib/database.types';
 import { useLanguage } from '../../contexts/LanguageContext';
 

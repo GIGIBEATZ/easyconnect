@@ -1,5 +1,5 @@
 import { useNotifications } from '../../contexts/NotificationsContext';
-import { Bell, Package, MessageCircle, Briefcase, TrendingDown, Star, Check, X } from 'lucide-react';
+import { Bell, Package, MessageCircle, Briefcase, TrendingDown, Star, Check } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 
 interface NotificationDropdownProps {
@@ -95,10 +95,10 @@ export const NotificationDropdown = ({ onViewAll }: NotificationDropdownProps) =
                 <div
                   key={notification.id}
                   className={`px-4 py-3 border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer ${
-                    !notification.read ? 'bg-blue-50 dark:bg-blue-900/10' : ''
+                    !notification.is_read ? 'bg-blue-50 dark:bg-blue-900/10' : ''
                   }`}
                   onClick={() => {
-                    if (!notification.read) {
+                    if (!notification.is_read) {
                       markAsRead(notification.id);
                     }
                   }}
@@ -118,7 +118,7 @@ export const NotificationDropdown = ({ onViewAll }: NotificationDropdownProps) =
                         {formatTime(notification.created_at)}
                       </p>
                     </div>
-                    {!notification.read && (
+                    {!notification.is_read && (
                       <div className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0 mt-2"></div>
                     )}
                   </div>

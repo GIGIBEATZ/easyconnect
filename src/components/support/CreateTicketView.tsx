@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { AlertCircle, CheckCircle, Upload, X } from 'lucide-react';
+import { AlertCircle, CheckCircle } from 'lucide-react';
 import type { Database } from '../../lib/database.types';
 
 type Category = Database['public']['Tables']['categories']['Row'];

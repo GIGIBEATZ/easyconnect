@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { CartProvider, useCart } from './contexts/CartContext';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -41,22 +41,15 @@ import type { Database } from './lib/database.types';
 
 type Product = Database['public']['Tables']['products']['Row'];
 type Job = Database['public']['Tables']['jobs']['Row'];
-type SupportService = Database['public']['Tables']['support_services']['Row'];
-type Profile = Database['public']['Tables']['profiles']['Row'];
-type SupportTicket = Database['public']['Tables']['support_tickets']['Row'];
 
 function AppContent() {
+  useLanguage();
   const { user, loading } = useAuth();
   const { totalItems, addItem } = useCart();
-  const { t } = useLanguage();
   const [showSignUp, setShowSignUp] = useState(false);
   const [currentView, setCurrentView] = useState('home');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
-  const [selectedService, setSelectedService] = useState<SupportService | null>(null);
-  const [selectedAgent, setSelectedAgent] = useState<Profile | null>(null);
-  const [selectedTicket, setSelectedTicket] = useState<SupportTicket | null>(null);
-  const [showCartBadge, setShowCartBadge] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [hasSelectedLanguage, setHasSelectedLanguage] = useState(
     localStorage.getItem('hasSelectedLanguage') === 'true'

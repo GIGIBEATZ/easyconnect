@@ -16,7 +16,6 @@ interface ProductDetailsProps {
 }
 
 export const ProductDetails = ({ product, onBack, onAddToCart }: ProductDetailsProps) => {
-  const { profile } = useAuth();
   const [seller, setSeller] = useState<Profile | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);

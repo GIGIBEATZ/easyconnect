@@ -2,7 +2,7 @@ import { useState } from 'react';
 import {
   Home, ShoppingBag, Briefcase, Heart, ShoppingCart, Package,
   TrendingUp, MessageSquare, User, Settings, ChevronRight,
-  ChevronDown, X, Menu
+  ChevronDown, X
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useCart } from '../../contexts/CartContext';

@@ -1,6 +1,5 @@
 import { supabase } from '../supabase';
 import { TranslationMap } from '../../types/i18n.types';
-import { FALLBACK_LANGUAGE } from './languages';
 
 const translationCache: Map<string, TranslationMap> = new Map();
 

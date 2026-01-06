@@ -14,7 +14,6 @@ interface TicketsViewProps {
 
 export const TicketsView = ({ onTicketSelect, onCreateTicket }: TicketsViewProps) => {
   const { user, profile } = useAuth();
-  const { t } = useLanguage();
   const [tickets, setTickets] = useState<SupportTicket[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'open' | 'in_progress' | 'resolved' | 'closed'>(

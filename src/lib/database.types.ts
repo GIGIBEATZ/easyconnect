@@ -816,6 +816,95 @@ export interface Database {
           updated_at?: string
         }
       }
+      user_language_preferences: {
+        Row: {
+          user_id: string
+          language_code: string
+          updated_at: string
+        }
+        Insert: {
+          user_id: string
+          language_code?: string
+          updated_at?: string
+        }
+        Update: {
+          user_id?: string
+          language_code?: string
+          updated_at?: string
+        }
+      }
+      languages: {
+        Row: {
+          code: string
+          name: string
+          native_name: string
+          is_rtl: boolean
+          is_active: boolean
+          flag_emoji: string | null
+          sort_order: number
+        }
+        Insert: {
+          code: string
+          name: string
+          native_name: string
+          is_rtl?: boolean
+          is_active?: boolean
+          flag_emoji?: string | null
+          sort_order?: number
+        }
+        Update: {
+          code?: string
+          name?: string
+          native_name?: string
+          is_rtl?: boolean
+          is_active?: boolean
+          flag_emoji?: string | null
+          sort_order?: number
+        }
+      }
+      saved_jobs: {
+        Row: {
+          id: string
+          user_id: string
+          job_id: string
+          notes: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          job_id: string
+          notes?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          job_id?: string
+          notes?: string | null
+          created_at?: string
+        }
+      }
+      follows: {
+        Row: {
+          id: string
+          follower_id: string
+          following_id: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          follower_id: string
+          following_id: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          follower_id?: string
+          following_id?: string
+          created_at?: string
+        }
+      }
     }
   }
 }
