@@ -44,11 +44,10 @@ interface LanguageWelcomeProps {
 }
 
 export const LanguageWelcome = ({ onLanguageSelect }: LanguageWelcomeProps) => {
-  const { currentLanguage, setLanguage } = useLanguage();
-  const [selectedLanguage, setSelectedLanguage] = useState(currentLanguage);
+  const { language, changeLanguage } = useLanguage();
+  const [selectedLanguage, setSelectedLanguage] = useState(language);
   const [showAllLanguages, setShowAllLanguages] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [isProcessing, setIsProcessing] = useState(false);
 
   const allLanguages = [...POPULAR_LANGUAGES, ...OTHER_LANGUAGES];
 
@@ -62,26 +61,15 @@ export const LanguageWelcome = ({ onLanguageSelect }: LanguageWelcomeProps) => {
     ? allLanguages
     : POPULAR_LANGUAGES;
 
-  const handleLanguageSelect = async (code: string) => {
-    setIsProcessing(true);
+  const handleLanguageSelect = (code: string) => {
     setSelectedLanguage(code);
-    await setLanguage(code);
+    changeLanguage(code);
     localStorage.setItem('hasSelectedLanguage', 'true');
-    setTimeout(() => {
-      onLanguageSelect();
-    }, 500);
+    onLanguageSelect();
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-600 flex items-center justify-center p-4 relative">
-      {isProcessing && (
-        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-8 text-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-lg font-semibold text-gray-900">Loading TechSupport Global...</p>
-          </div>
-        </div>
-      )}
+    <div className="min-h-screen bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-600 flex items-center justify-center p-4">
       <div className="max-w-5xl w-full">
         <div className="text-center mb-8">
           <div className="inline-block p-4 bg-white bg-opacity-20 rounded-full mb-6">
@@ -114,8 +102,7 @@ export const LanguageWelcome = ({ onLanguageSelect }: LanguageWelcomeProps) => {
               <button
                 key={language.code}
                 onClick={() => handleLanguageSelect(language.code)}
-                disabled={isProcessing}
-                className={`flex items-center justify-between p-4 rounded-lg border-2 transition-all hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed ${
+                className={`flex items-center justify-between p-4 rounded-lg border-2 transition-all hover:shadow-md ${
                   selectedLanguage === language.code
                     ? 'border-blue-600 bg-blue-50'
                     : 'border-gray-200 hover:border-blue-300'

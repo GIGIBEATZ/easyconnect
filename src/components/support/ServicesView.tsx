@@ -12,7 +12,7 @@ interface ServicesViewProps {
 }
 
 export const ServicesView = ({ onServiceSelect }: ServicesViewProps) => {
-  const { t, currentLanguage } = useLanguage();
+  const { t, language } = useLanguage();
   const [services, setServices] = useState<SupportService[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);

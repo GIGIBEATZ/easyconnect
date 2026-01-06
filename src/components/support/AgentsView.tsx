@@ -13,7 +13,7 @@ interface AgentsViewProps {
 }
 
 export const AgentsView = ({ onAgentSelect, onContactAgent }: AgentsViewProps) => {
-  const { t, currentLanguage } = useLanguage();
+  const { t, language } = useLanguage();
   const [agents, setAgents] = useState<Profile[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
