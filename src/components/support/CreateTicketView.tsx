@@ -14,7 +14,7 @@ interface CreateTicketViewProps {
 
 export const CreateTicketView = ({ onSuccess, onBack }: CreateTicketViewProps) => {
   const { user } = useAuth();
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
@@ -39,7 +39,7 @@ export const CreateTicketView = ({ onSuccess, onBack }: CreateTicketViewProps) =
       if (error) throw error;
       setCategories(data || []);
       if (data && data.length > 0) {
-        setCategory(data[0].name);
+        setCategory(data[0].id);
       }
     } catch (error) {
       console.error('Error loading categories:', error);

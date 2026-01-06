@@ -19,12 +19,12 @@ export interface Database {
           location: string | null
           phone: string | null
           roles: string[]
-          agent_specializations: string[]
-          agent_rating: number
-          total_tickets_resolved: number
-          is_available: boolean
-          created_at: string
-          updated_at: string
+          agent_specializations: string[] | null
+          agent_rating: number | null
+          total_tickets_resolved: number | null
+          is_available: boolean | null
+          created_at: string | null
+          updated_at: string | null
         }
         Insert: {
           id: string
@@ -35,12 +35,12 @@ export interface Database {
           location?: string | null
           phone?: string | null
           roles?: string[]
-          agent_specializations?: string[]
-          agent_rating?: number
-          total_tickets_resolved?: number
-          is_available?: boolean
-          created_at?: string
-          updated_at?: string
+          agent_specializations?: string[] | null
+          agent_rating?: number | null
+          total_tickets_resolved?: number | null
+          is_available?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
         }
         Update: {
           id?: string
@@ -51,12 +51,12 @@ export interface Database {
           location?: string | null
           phone?: string | null
           roles?: string[]
-          agent_specializations?: string[]
-          agent_rating?: number
-          total_tickets_resolved?: number
-          is_available?: boolean
-          created_at?: string
-          updated_at?: string
+          agent_specializations?: string[] | null
+          agent_rating?: number | null
+          total_tickets_resolved?: number | null
+          is_available?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
         }
       }
       categories: {
@@ -328,8 +328,8 @@ export interface Database {
           title: string
           message: string
           link: string | null
-          is_read: boolean
-          created_at: string
+          read: boolean | null
+          created_at: string | null
         }
         Insert: {
           id?: string
@@ -338,8 +338,8 @@ export interface Database {
           title: string
           message: string
           link?: string | null
-          is_read?: boolean
-          created_at?: string
+          read?: boolean | null
+          created_at?: string | null
         }
         Update: {
           id?: string
@@ -348,8 +348,8 @@ export interface Database {
           title?: string
           message?: string
           link?: string | null
-          is_read?: boolean
-          created_at?: string
+          read?: boolean | null
+          created_at?: string | null
         }
       }
       user_preferences: {

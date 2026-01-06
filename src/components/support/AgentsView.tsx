@@ -13,7 +13,7 @@ interface AgentsViewProps {
 }
 
 export const AgentsView = ({ onAgentSelect, onContactAgent }: AgentsViewProps) => {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const [agents, setAgents] = useState<Profile[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -189,11 +189,11 @@ export const AgentsView = ({ onAgentSelect, onContactAgent }: AgentsViewProps) =
                   <div className="flex items-center">
                     <Star className="w-5 h-5 text-yellow-400 fill-current" />
                     <span className="ml-1 font-semibold text-gray-900 dark:text-white">
-                      {agent.agent_rating.toFixed(1)}
+                      {(agent.agent_rating || 0).toFixed(1)}
                     </span>
                   </div>
                   <span className="ml-3 text-sm text-gray-600 dark:text-gray-400">
-                    {agent.total_tickets_resolved} tickets resolved
+                    {agent.total_tickets_resolved || 0} tickets resolved
                   </span>
                 </div>
 

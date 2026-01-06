@@ -95,10 +95,10 @@ export const NotificationDropdown = ({ onViewAll }: NotificationDropdownProps) =
                 <div
                   key={notification.id}
                   className={`px-4 py-3 border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer ${
-                    !notification.is_read ? 'bg-blue-50 dark:bg-blue-900/10' : ''
+                    !notification.read ? 'bg-blue-50 dark:bg-blue-900/10' : ''
                   }`}
                   onClick={() => {
-                    if (!notification.is_read) {
+                    if (!notification.read) {
                       markAsRead(notification.id);
                     }
                   }}
@@ -115,10 +115,10 @@ export const NotificationDropdown = ({ onViewAll }: NotificationDropdownProps) =
                         {notification.message}
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
-                        {formatTime(notification.created_at)}
+                        {formatTime(notification.created_at || '')}
                       </p>
                     </div>
-                    {!notification.is_read && (
+                    {!notification.read && (
                       <div className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0 mt-2"></div>
                     )}
                   </div>
