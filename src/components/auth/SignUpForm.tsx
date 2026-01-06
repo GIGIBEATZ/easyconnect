@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import { UserPlus, Eye, EyeOff, Check, X } from 'lucide-react';
+import { UserPlus, Eye, EyeOff, Check, X, Users, Headphones } from 'lucide-react';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 interface SignUpFormProps {
   onToggleForm: () => void;
@@ -8,11 +9,14 @@ interface SignUpFormProps {
 
 export const SignUpForm = ({ onToggleForm }: SignUpFormProps) => {
   const { signUp } = useAuth();
+  const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [selectedRoles, setSelectedRoles] = useState<string[]>(['buyer']);
+  const [accountType, setAccountType] = useState<'client' | 'support_agent'>('client');
+  const [selectedRoles, setSelectedRoles] = useState<string[]>(['client']);
+  const [selectedSpecializations, setSelectedSpecializations] = useState<string[]>([]);
   const [error, setError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -41,19 +45,31 @@ export const SignUpForm = ({ onToggleForm }: SignUpFormProps) => {
 
   const isPasswordValid = passwordRequirements.every(req => req.met);
 
-  const roleOptions = [
-    { value: 'buyer', label: 'Buyer' },
-    { value: 'seller', label: 'Seller' },
-    { value: 'job_seeker', label: 'Job Seeker' },
-    { value: 'employer', label: 'Employer' },
+  const specializationOptions = [
+    { value: 'hardware', label: 'Hardware Support' },
+    { value: 'software', label: 'Software Support' },
+    { value: 'network', label: 'Network Solutions' },
+    { value: 'cloud', label: 'Cloud Services' },
+    { value: 'security', label: 'Cybersecurity' },
+    { value: 'data_recovery', label: 'Data Recovery' },
+    { value: 'mobile', label: 'Mobile Support' },
+    { value: 'web_development', label: 'Web Development' },
   ];
 
-  const handleRoleToggle = (role: string) => {
-    setSelectedRoles(prev =>
-      prev.includes(role)
-        ? prev.filter(r => r !== role)
-        : [...prev, role]
+  const handleSpecializationToggle = (specialization: string) => {
+    setSelectedSpecializations(prev =>
+      prev.includes(specialization)
+        ? prev.filter(s => s !== specialization)
+        : [...prev, specialization]
     );
+  };
+
+  const handleAccountTypeChange = (type: 'client' | 'support_agent') => {
+    setAccountType(type);
+    setSelectedRoles([type]);
+    if (type === 'client') {
+      setSelectedSpecializations([]);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -70,13 +86,18 @@ export const SignUpForm = ({ onToggleForm }: SignUpFormProps) => {
     }
 
     if (selectedRoles.length === 0) {
-      setError('Please select at least one role');
+      setError('Please select an account type');
+      return;
+    }
+
+    if (accountType === 'support_agent' && selectedSpecializations.length === 0) {
+      setError('Please select at least one specialization');
       return;
     }
 
     setLoading(true);
 
-    const { error } = await signUp(email, password, fullName, selectedRoles);
+    const { error } = await signUp(email, password, fullName, selectedRoles, selectedSpecializations);
 
     if (error) {
       setError(error.message || 'Failed to sign up');
@@ -207,23 +228,75 @@ export const SignUpForm = ({ onToggleForm }: SignUpFormProps) => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            I want to be a (select all that apply):
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            Account Type *
           </label>
-          <div className="space-y-2">
-            {roleOptions.map((role) => (
-              <label key={role.value} className="flex items-center">
-                <input
-                  type="checkbox"
-                  checked={selectedRoles.includes(role.value)}
-                  onChange={() => handleRoleToggle(role.value)}
-                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                />
-                <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">{role.label}</span>
-              </label>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <button
+              type="button"
+              onClick={() => handleAccountTypeChange('client')}
+              className={`p-4 border-2 rounded-lg transition-all ${
+                accountType === 'client'
+                  ? 'border-blue-600 bg-blue-50 dark:bg-blue-900/20'
+                  : 'border-gray-300 dark:border-gray-600 hover:border-blue-400'
+              }`}
+            >
+              <div className="flex items-center justify-center mb-2">
+                <Users className={`w-8 h-8 ${accountType === 'client' ? 'text-blue-600' : 'text-gray-400'}`} />
+              </div>
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
+                Client
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                I need tech support assistance
+              </p>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleAccountTypeChange('support_agent')}
+              className={`p-4 border-2 rounded-lg transition-all ${
+                accountType === 'support_agent'
+                  ? 'border-blue-600 bg-blue-50 dark:bg-blue-900/20'
+                  : 'border-gray-300 dark:border-gray-600 hover:border-blue-400'
+              }`}
+            >
+              <div className="flex items-center justify-center mb-2">
+                <Headphones className={`w-8 h-8 ${accountType === 'support_agent' ? 'text-blue-600' : 'text-gray-400'}`} />
+              </div>
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
+                Support Agent / Technician
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                I provide tech support services
+              </p>
+            </button>
           </div>
         </div>
+
+        {accountType === 'support_agent' && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Specializations * (Select all that apply)
+            </label>
+            <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto p-2 border border-gray-300 dark:border-gray-600 rounded-lg">
+              {specializationOptions.map((spec) => (
+                <label key={spec.value} className="flex items-center p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded">
+                  <input
+                    type="checkbox"
+                    checked={selectedSpecializations.includes(spec.value)}
+                    onChange={() => handleSpecializationToggle(spec.value)}
+                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  />
+                  <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">{spec.label}</span>
+                </label>
+              ))}
+            </div>
+            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+              Select your areas of expertise to help clients find you
+            </p>
+          </div>
+        )}
 
         <button
           type="submit"

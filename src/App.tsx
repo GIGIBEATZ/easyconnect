@@ -33,12 +33,17 @@ import { Footer } from './components/layout/Footer';
 import { StaticPage } from './components/pages/StaticPage';
 import { ContactPage } from './components/pages/ContactPage';
 import { ServicesView } from './components/support/ServicesView';
+import { AgentsView } from './components/support/AgentsView';
+import { CreateTicketView } from './components/support/CreateTicketView';
+import { TicketsView } from './components/support/TicketsView';
 import { ShoppingCart } from 'lucide-react';
 import type { Database } from './lib/database.types';
 
 type Product = Database['public']['Tables']['products']['Row'];
 type Job = Database['public']['Tables']['jobs']['Row'];
 type SupportService = Database['public']['Tables']['support_services']['Row'];
+type Profile = Database['public']['Tables']['profiles']['Row'];
+type SupportTicket = Database['public']['Tables']['support_tickets']['Row'];
 
 function AppContent() {
   const { user, loading } = useAuth();
@@ -49,6 +54,8 @@ function AppContent() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [selectedService, setSelectedService] = useState<SupportService | null>(null);
+  const [selectedAgent, setSelectedAgent] = useState<Profile | null>(null);
+  const [selectedTicket, setSelectedTicket] = useState<SupportTicket | null>(null);
   const [showCartBadge, setShowCartBadge] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [hasSelectedLanguage, setHasSelectedLanguage] = useState(
@@ -128,6 +135,36 @@ function AppContent() {
               setSelectedService(service);
               setCurrentView('service-details');
             }}
+          />
+        )}
+
+        {currentView === 'find-agents' && (
+          <AgentsView
+            onAgentSelect={(agent) => {
+              setSelectedAgent(agent);
+              setCurrentView('agent-profile');
+            }}
+            onContactAgent={(agent) => {
+              setSelectedAgent(agent);
+              setCurrentView('create-ticket');
+            }}
+          />
+        )}
+
+        {currentView === 'tickets' && (
+          <TicketsView
+            onTicketSelect={(ticket) => {
+              setSelectedTicket(ticket);
+              setCurrentView('ticket-details');
+            }}
+            onCreateTicket={() => setCurrentView('create-ticket')}
+          />
+        )}
+
+        {currentView === 'create-ticket' && (
+          <CreateTicketView
+            onSuccess={() => setCurrentView('tickets')}
+            onBack={() => setCurrentView('home')}
           />
         )}
 

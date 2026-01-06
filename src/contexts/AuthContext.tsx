@@ -11,7 +11,7 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
-  signUp: (email: string, password: string, fullName: string, roles: string[]) => Promise<{ error: any }>;
+  signUp: (email: string, password: string, fullName: string, roles: string[], specializations?: string[]) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
   updateProfile: (updates: Partial<Profile>) => Promise<{ error: any }>;
 }
@@ -88,7 +88,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const signUp = async (email: string, password: string, fullName: string, roles: string[]) => {
+  const signUp = async (email: string, password: string, fullName: string, roles: string[], specializations: string[] = []) => {
     try {
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
@@ -105,6 +105,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             email,
             full_name: fullName,
             roles,
+            agent_specializations: specializations.length > 0 ? specializations : [],
+            is_available: roles.includes('support_agent'),
           });
 
         if (profileError) return { error: profileError };

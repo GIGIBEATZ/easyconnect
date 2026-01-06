@@ -132,16 +132,16 @@ export const Hero = ({ onViewChange }: HeroProps) => {
 
         <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
           <button
-            onClick={() => onViewChange('services')}
+            onClick={() => onViewChange('create-ticket')}
             className="w-full sm:w-auto px-8 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all font-medium shadow-lg hover:shadow-xl text-lg"
           >
             {t('hero.cta', 'Get Support Now')}
           </button>
           <button
-            onClick={() => onViewChange('knowledge_base')}
+            onClick={() => onViewChange('find-agents')}
             className="w-full sm:w-auto px-8 py-4 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border-2 border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium text-lg"
           >
-            Browse Help Articles
+            Find Expert Agents
           </button>
         </div>
 
