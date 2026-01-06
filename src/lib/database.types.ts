@@ -19,8 +19,6 @@ export interface Database {
           location: string | null
           phone: string | null
           roles: string[]
-          preferred_language: string
-          timezone: string | null
           agent_specializations: string[]
           agent_rating: number
           total_tickets_resolved: number
@@ -37,8 +35,6 @@ export interface Database {
           location?: string | null
           phone?: string | null
           roles?: string[]
-          preferred_language?: string
-          timezone?: string | null
           agent_specializations?: string[]
           agent_rating?: number
           total_tickets_resolved?: number
@@ -55,8 +51,6 @@ export interface Database {
           location?: string | null
           phone?: string | null
           roles?: string[]
-          preferred_language?: string
-          timezone?: string | null
           agent_specializations?: string[]
           agent_rating?: number
           total_tickets_resolved?: number
@@ -69,25 +63,25 @@ export interface Database {
         Row: {
           id: string
           name: string
-          description: string | null
-          type: string
           slug: string
+          type: string
+          description: string | null
           created_at: string
         }
         Insert: {
           id?: string
           name: string
-          description?: string | null
-          type: string
           slug: string
+          type: string
+          description?: string | null
           created_at?: string
         }
         Update: {
           id?: string
           name?: string
-          description?: string | null
-          type?: string
           slug?: string
+          type?: string
+          description?: string | null
           created_at?: string
         }
       }
@@ -326,492 +320,69 @@ export interface Database {
           updated_at?: string
         }
       }
-      products: {
-        Row: {
-          id: string
-          seller_id: string
-          category_id: string | null
-          title: string
-          description: string
-          price: number
-          stock: number
-          images: string[]
-          status: string
-          created_at: string
-          updated_at: string
-        }
-        Insert: {
-          id?: string
-          seller_id: string
-          category_id?: string | null
-          title: string
-          description: string
-          price: number
-          stock?: number
-          images?: string[]
-          status?: string
-          created_at?: string
-          updated_at?: string
-        }
-        Update: {
-          id?: string
-          seller_id?: string
-          category_id?: string | null
-          title?: string
-          description?: string
-          price?: number
-          stock?: number
-          images?: string[]
-          status?: string
-          created_at?: string
-          updated_at?: string
-        }
-      }
-      jobs: {
-        Row: {
-          id: string
-          employer_id: string
-          category_id: string | null
-          title: string
-          description: string
-          job_type: string
-          location: string
-          salary_min: number | null
-          salary_max: number | null
-          requirements: string[]
-          status: string
-          created_at: string
-          updated_at: string
-        }
-        Insert: {
-          id?: string
-          employer_id: string
-          category_id?: string | null
-          title: string
-          description: string
-          job_type: string
-          location: string
-          salary_min?: number | null
-          salary_max?: number | null
-          requirements?: string[]
-          status?: string
-          created_at?: string
-          updated_at?: string
-        }
-        Update: {
-          id?: string
-          employer_id?: string
-          category_id?: string | null
-          title?: string
-          description?: string
-          job_type?: string
-          location?: string
-          salary_min?: number | null
-          salary_max?: number | null
-          requirements?: string[]
-          status?: string
-          created_at?: string
-          updated_at?: string
-        }
-      }
-      orders: {
-        Row: {
-          id: string
-          buyer_id: string
-          seller_id: string
-          total_amount: number
-          status: string
-          shipping_address: string | null
-          created_at: string
-          updated_at: string
-        }
-        Insert: {
-          id?: string
-          buyer_id: string
-          seller_id: string
-          total_amount: number
-          status?: string
-          shipping_address?: string | null
-          created_at?: string
-          updated_at?: string
-        }
-        Update: {
-          id?: string
-          buyer_id?: string
-          seller_id?: string
-          total_amount?: number
-          status?: string
-          shipping_address?: string | null
-          created_at?: string
-          updated_at?: string
-        }
-      }
-      order_items: {
-        Row: {
-          id: string
-          order_id: string
-          product_id: string
-          quantity: number
-          price: number
-          created_at: string
-        }
-        Insert: {
-          id?: string
-          order_id: string
-          product_id: string
-          quantity: number
-          price: number
-          created_at?: string
-        }
-        Update: {
-          id?: string
-          order_id?: string
-          product_id?: string
-          quantity?: number
-          price?: number
-          created_at?: string
-        }
-      }
-      job_applications: {
-        Row: {
-          id: string
-          job_id: string
-          applicant_id: string
-          cover_letter: string
-          resume_url: string | null
-          status: string
-          created_at: string
-          updated_at: string
-        }
-        Insert: {
-          id?: string
-          job_id: string
-          applicant_id: string
-          cover_letter: string
-          resume_url?: string | null
-          status?: string
-          created_at?: string
-          updated_at?: string
-        }
-        Update: {
-          id?: string
-          job_id?: string
-          applicant_id?: string
-          cover_letter?: string
-          resume_url?: string | null
-          status?: string
-          created?: string
-          updated_at?: string
-        }
-      }
-      reviews: {
-        Row: {
-          id: string
-          product_id: string | null
-          reviewer_id: string
-          rating: number
-          comment: string | null
-          created_at: string
-        }
-        Insert: {
-          id?: string
-          product_id?: string | null
-          reviewer_id: string
-          rating: number
-          comment?: string | null
-          created_at?: string
-        }
-        Update: {
-          id?: string
-          product_id?: string | null
-          reviewer_id?: string
-          rating?: number
-          comment?: string | null
-          created_at?: string
-        }
-      }
-      messages: {
-        Row: {
-          id: string
-          sender_id: string
-          receiver_id: string
-          content: string
-          is_read: boolean
-          created_at: string
-        }
-        Insert: {
-          id?: string
-          sender_id: string
-          receiver_id: string
-          content: string
-          is_read?: boolean
-          created_at?: string
-        }
-        Update: {
-          id?: string
-          sender_id?: string
-          receiver_id?: string
-          content?: string
-          is_read?: boolean
-          created_at?: string
-        }
-      }
       notifications: {
         Row: {
           id: string
           user_id: string
+          type: string
           title: string
           message: string
-          type: string
+          link: string | null
           is_read: boolean
           created_at: string
         }
         Insert: {
           id?: string
           user_id: string
+          type: string
           title: string
           message: string
-          type: string
+          link?: string | null
           is_read?: boolean
           created_at?: string
         }
         Update: {
           id?: string
           user_id?: string
+          type?: string
           title?: string
           message?: string
-          type?: string
+          link?: string | null
           is_read?: boolean
           created_at?: string
         }
       }
       user_preferences: {
         Row: {
-          id: string
           user_id: string
-          theme: string
-          language: string
-          notifications_enabled: boolean
+          theme_mode: string
+          color_scheme: string
+          font_size: string
+          compact_mode: boolean
           email_notifications: boolean
+          notification_types: Json
           created_at: string
           updated_at: string
         }
         Insert: {
-          id?: string
           user_id: string
-          theme?: string
-          language?: string
-          notifications_enabled?: boolean
+          theme_mode?: string
+          color_scheme?: string
+          font_size?: string
+          compact_mode?: boolean
           email_notifications?: boolean
+          notification_types?: Json
           created_at?: string
           updated_at?: string
         }
         Update: {
-          id?: string
           user_id?: string
-          theme?: string
-          language?: string
-          notifications_enabled?: boolean
+          theme_mode?: string
+          color_scheme?: string
+          font_size?: string
+          compact_mode?: boolean
           email_notifications?: boolean
-          created_at?: string
-          updated_at?: string
-        }
-      }
-      favorites: {
-        Row: {
-          id: string
-          user_id: string
-          product_id: string
-          created_at: string
-        }
-        Insert: {
-          id?: string
-          user_id: string
-          product_id: string
-          created_at?: string
-        }
-        Update: {
-          id?: string
-          user_id?: string
-          product_id?: string
-          created_at?: string
-        }
-      }
-      browsing_history: {
-        Row: {
-          id: string
-          user_id: string
-          product_id: string
-          viewed_at: string
-        }
-        Insert: {
-          id?: string
-          user_id: string
-          product_id: string
-          viewed_at?: string
-        }
-        Update: {
-          id?: string
-          user_id?: string
-          product_id?: string
-          viewed_at?: string
-        }
-      }
-      saved_searches: {
-        Row: {
-          id: string
-          user_id: string
-          search_type: string
-          search_query: string
-          filters: Json
-          created_at: string
-        }
-        Insert: {
-          id?: string
-          user_id: string
-          search_type: string
-          search_query: string
-          filters?: Json
-          created_at?: string
-        }
-        Update: {
-          id?: string
-          user_id?: string
-          search_type?: string
-          search_query?: string
-          filters?: Json
-          created_at?: string
-        }
-      }
-      footer_sections: {
-        Row: {
-          id: string
-          title: string
-          slug: string
-          order_index: number
-          is_active: boolean
-          created_at: string
-        }
-        Insert: {
-          id?: string
-          title: string
-          slug: string
-          order_index?: number
-          is_active?: boolean
-          created_at?: string
-        }
-        Update: {
-          id?: string
-          title?: string
-          slug?: string
-          order_index?: number
-          is_active?: boolean
-          created_at?: string
-        }
-      }
-      footer_links: {
-        Row: {
-          id: string
-          section_id: string
-          title: string
-          url: string
-          order_index: number
-          is_active: boolean
-          created_at: string
-        }
-        Insert: {
-          id?: string
-          section_id: string
-          title: string
-          url: string
-          order_index?: number
-          is_active?: boolean
-          created_at?: string
-        }
-        Update: {
-          id?: string
-          section_id?: string
-          title?: string
-          url?: string
-          order_index?: number
-          is_active?: boolean
-          created_at?: string
-        }
-      }
-      static_pages: {
-        Row: {
-          id: string
-          title: string
-          slug: string
-          content: string
-          is_published: boolean
-          created_at: string
-          updated_at: string
-        }
-        Insert: {
-          id?: string
-          title: string
-          slug: string
-          content: string
-          is_published?: boolean
-          created_at?: string
-          updated_at?: string
-        }
-        Update: {
-          id?: string
-          title?: string
-          slug?: string
-          content?: string
-          is_published?: boolean
-          created_at?: string
-          updated_at?: string
-        }
-      }
-      translation_keys: {
-        Row: {
-          id: string
-          key: string
-          category: string
-          description: string | null
-          created_at: string
-        }
-        Insert: {
-          id?: string
-          key: string
-          category: string
-          description?: string | null
-          created_at?: string
-        }
-        Update: {
-          id?: string
-          key?: string
-          category?: string
-          description?: string | null
-          created_at?: string
-        }
-      }
-      translations: {
-        Row: {
-          id: string
-          key_id: string
-          language_code: string
-          value: string
-          created_at: string
-          updated_at: string
-        }
-        Insert: {
-          id?: string
-          key_id: string
-          language_code: string
-          value: string
-          created_at?: string
-          updated_at?: string
-        }
-        Update: {
-          id?: string
-          key_id?: string
-          language_code?: string
-          value?: string
+          notification_types?: Json
           created_at?: string
           updated_at?: string
         }
@@ -862,47 +433,82 @@ export interface Database {
           sort_order?: number
         }
       }
-      saved_jobs: {
+      translation_keys: {
         Row: {
           id: string
-          user_id: string
-          job_id: string
-          notes: string | null
+          key: string
+          namespace: string
+          context: string | null
           created_at: string
         }
         Insert: {
           id?: string
-          user_id: string
-          job_id: string
-          notes?: string | null
+          key: string
+          namespace: string
+          context?: string | null
           created_at?: string
         }
         Update: {
           id?: string
-          user_id?: string
-          job_id?: string
-          notes?: string | null
+          key?: string
+          namespace?: string
+          context?: string | null
           created_at?: string
         }
       }
-      follows: {
+      translations: {
         Row: {
           id: string
-          follower_id: string
-          following_id: string
-          created_at: string
+          key_id: string | null
+          language_code: string | null
+          value: string
+          is_verified: boolean
+          updated_at: string
         }
         Insert: {
           id?: string
-          follower_id: string
-          following_id: string
-          created_at?: string
+          key_id?: string | null
+          language_code?: string | null
+          value: string
+          is_verified?: boolean
+          updated_at?: string
         }
         Update: {
           id?: string
-          follower_id?: string
-          following_id?: string
+          key_id?: string | null
+          language_code?: string | null
+          value?: string
+          is_verified?: boolean
+          updated_at?: string
+        }
+      }
+      static_pages: {
+        Row: {
+          id: string
+          title: string
+          slug: string
+          content: string
+          meta_description: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          slug: string
+          content: string
+          meta_description?: string | null
           created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          slug?: string
+          content?: string
+          meta_description?: string | null
+          created_at?: string
+          updated_at?: string
         }
       }
     }
