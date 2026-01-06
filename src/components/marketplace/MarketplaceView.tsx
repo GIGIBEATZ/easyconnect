@@ -11,9 +11,10 @@ type Category = Database['public']['Tables']['categories']['Row'];
 interface MarketplaceViewProps {
   onProductSelect: (product: Product) => void;
   onAddProduct: () => void;
+  onAddToCart?: (product: Product) => void;
 }
 
-export const MarketplaceView = ({ onProductSelect, onAddProduct }: MarketplaceViewProps) => {
+export const MarketplaceView = ({ onProductSelect, onAddProduct, onAddToCart }: MarketplaceViewProps) => {
   const { profile } = useAuth();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -159,6 +160,7 @@ export const MarketplaceView = ({ onProductSelect, onAddProduct }: MarketplaceVi
               key={product.id}
               product={product}
               onViewDetails={onProductSelect}
+              onAddToCart={onAddToCart}
             />
           ))}
         </div>
