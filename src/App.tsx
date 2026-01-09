@@ -19,6 +19,7 @@ import { ServicesView } from './components/support/ServicesView';
 import { AgentsView } from './components/support/AgentsView';
 import { CreateTicketView } from './components/support/CreateTicketView';
 import { TicketsView } from './components/support/TicketsView';
+import { LearningHub } from './components/learning/LearningHub';
 import { HeadphonesIcon } from 'lucide-react';
 import type { Database } from './lib/database.types';
 
@@ -119,6 +120,8 @@ function AppContent() {
 
         <main className="flex-1">
           {currentView === 'home' && <Hero onViewChange={setCurrentView} />}
+
+          {currentView === 'learning' && <LearningHub />}
 
           {currentView === 'services' && (
             <ServicesView

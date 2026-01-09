@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import {
   Home, Users, MessageSquare, User, Settings, ChevronRight,
-  ChevronDown, X, Headphones, Zap
+  ChevronDown, X, Headphones, Zap, GraduationCap
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNotifications } from '../../contexts/NotificationsContext';
@@ -37,6 +37,13 @@ export const Sidebar = ({ currentView, onViewChange, isOpen, onClose }: SidebarP
       icon: Home,
       view: 'home',
       color: 'bg-blue-500',
+    },
+    {
+      id: 'learning',
+      label: 'Learning Hub',
+      icon: GraduationCap,
+      view: 'learning',
+      color: 'bg-purple-500',
     },
     {
       id: 'services',
