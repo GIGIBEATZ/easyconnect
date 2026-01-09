@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import {
-  ArrowUp, Facebook, Twitter, Instagram, Linkedin, Mail,
+  ArrowUp, Facebook, Twitter, Linkedin,
   ChevronDown, ChevronUp
 } from 'lucide-react';
 
@@ -24,52 +24,37 @@ interface FooterSection {
 export const Footer = ({ onViewChange }: FooterProps) => {
   const { user } = useAuth();
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
-  const [email, setEmail] = useState('');
-  const [subscribeStatus, setSubscribeStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   const footerSections: FooterSection[] = [
     {
-      title: 'About Tech Support',
-      links: [
-        { label: 'About Us', view: 'about' },
-        { label: 'Our Team', view: 'team' },
-        { label: 'Blog & Articles', view: 'blog' },
-        { label: 'Press & Media', view: 'press' },
-        { label: 'Company Values', view: 'values' },
-        { label: 'Terms of Service', view: 'terms' },
-      ],
-    },
-    {
-      title: 'Services & Support',
+      title: 'Services',
       links: [
         { label: 'Browse Services', view: 'services' },
-        { label: 'Find Support Agents', view: 'find-agents' },
-        { label: 'Knowledge Base', view: 'kb' },
-        { label: 'Service FAQs', view: 'faq' },
-        { label: 'Service Pricing', view: 'pricing' },
-        { label: 'Schedule a Call', view: 'services', requiresAuth: true },
+        { label: 'Find Agents', view: 'find-agents' },
+        { label: 'Pricing', view: 'services' },
       ],
     },
     {
-      title: 'For Our Agents',
+      title: 'For Agents',
       links: [
         { label: 'Agent Portal', view: 'dashboard', requiresAuth: true },
-        { label: 'Apply to Join', view: 'apply-agent' },
-        { label: 'Agent Guidelines', view: 'agent-guidelines' },
-        { label: 'Training Resources', view: 'training' },
-        { label: 'Commission Structure', view: 'commission' },
-        { label: 'Partner with Us', view: 'partnerships' },
+        { label: 'Become an Agent', view: 'apply-agent' },
       ],
     },
     {
-      title: 'Help & Contact',
+      title: 'Support',
       links: [
-        { label: 'Your Account', view: 'profile', requiresAuth: true },
         { label: 'Your Tickets', view: 'tickets', requiresAuth: true },
-        { label: 'Support Policies', view: 'policies' },
-        { label: 'Refund Policy', view: 'refund-policy' },
         { label: 'Help Center', view: 'help' },
         { label: 'Contact Us', view: 'contact' },
+      ],
+    },
+    {
+      title: 'Company',
+      links: [
+        { label: 'About', view: 'about' },
+        { label: 'Terms', view: 'terms' },
+        { label: 'Privacy', view: 'privacy' },
       ],
     },
   ];
@@ -95,22 +80,6 @@ export const Footer = ({ onViewChange }: FooterProps) => {
     }
     onViewChange(link.view);
     scrollToTop();
-  };
-
-  const handleNewsletterSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setSubscribeStatus('error');
-      return;
-    }
-
-    setSubscribeStatus('loading');
-
-    setTimeout(() => {
-      setSubscribeStatus('success');
-      setEmail('');
-      setTimeout(() => setSubscribeStatus('idle'), 3000);
-    }, 1000);
   };
 
   return (
@@ -164,89 +133,21 @@ export const Footer = ({ onViewChange }: FooterProps) => {
         </div>
 
         <div className="border-t border-gray-700 dark:border-gray-800 pt-8 pb-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            <div>
-              <h3 className="text-base font-bold text-white mb-4">Stay Connected</h3>
-              <form onSubmit={handleNewsletterSubmit} className="flex gap-2 mb-4">
-                <div className="flex-1">
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email"
-                    className="w-full px-4 py-2 bg-gray-700 dark:bg-gray-800 border border-gray-600 dark:border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    disabled={subscribeStatus === 'loading'}
-                  />
-                </div>
-                <button
-                  type="submit"
-                  disabled={subscribeStatus === 'loading'}
-                  className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 text-white rounded-lg transition-colors font-medium flex items-center gap-2"
-                >
-                  <Mail className="w-4 h-4" />
-                  Subscribe
-                </button>
-              </form>
-              {subscribeStatus === 'success' && (
-                <p className="text-sm text-green-400">Thanks for subscribing!</p>
-              )}
-              {subscribeStatus === 'error' && (
-                <p className="text-sm text-red-400">Please enter a valid email</p>
-              )}
-            </div>
-
-            <div>
-              <h3 className="text-base font-bold text-white mb-4">Follow Us</h3>
-              <div className="flex gap-4">
-                <button className="w-10 h-10 bg-gray-700 dark:bg-gray-800 hover:bg-gray-600 dark:hover:bg-gray-700 rounded-full flex items-center justify-center transition-colors">
-                  <Facebook className="w-5 h-5" />
-                </button>
-                <button className="w-10 h-10 bg-gray-700 dark:bg-gray-800 hover:bg-gray-600 dark:hover:bg-gray-700 rounded-full flex items-center justify-center transition-colors">
-                  <Twitter className="w-5 h-5" />
-                </button>
-                <button className="w-10 h-10 bg-gray-700 dark:bg-gray-800 hover:bg-gray-600 dark:hover:bg-gray-700 rounded-full flex items-center justify-center transition-colors">
-                  <Instagram className="w-5 h-5" />
-                </button>
-                <button className="w-10 h-10 bg-gray-700 dark:bg-gray-800 hover:bg-gray-600 dark:hover:bg-gray-700 rounded-full flex items-center justify-center transition-colors">
-                  <Linkedin className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-          </div>
-
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-400">
-            <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-              <button
-                onClick={() => {
-                  onViewChange('privacy');
-                  scrollToTop();
-                }}
-                className="hover:text-white transition-colors"
-              >
-                Privacy Policy
+            <p className="text-center md:text-left">
+              © {new Date().getFullYear()} Tech Support. All rights reserved.
+            </p>
+            <div className="flex gap-3">
+              <button className="w-9 h-9 bg-gray-700 dark:bg-gray-800 hover:bg-gray-600 dark:hover:bg-gray-700 rounded-full flex items-center justify-center transition-colors">
+                <Facebook className="w-4 h-4" />
               </button>
-              <button
-                onClick={() => {
-                  onViewChange('terms');
-                  scrollToTop();
-                }}
-                className="hover:text-white transition-colors"
-              >
-                Terms of Service
+              <button className="w-9 h-9 bg-gray-700 dark:bg-gray-800 hover:bg-gray-600 dark:hover:bg-gray-700 rounded-full flex items-center justify-center transition-colors">
+                <Twitter className="w-4 h-4" />
               </button>
-              <button
-                onClick={() => {
-                  onViewChange('cookies');
-                  scrollToTop();
-                }}
-                className="hover:text-white transition-colors"
-              >
-                Cookie Policy
+              <button className="w-9 h-9 bg-gray-700 dark:bg-gray-800 hover:bg-gray-600 dark:hover:bg-gray-700 rounded-full flex items-center justify-center transition-colors">
+                <Linkedin className="w-4 h-4" />
               </button>
             </div>
-            <p className="text-center md:text-right">
-              © {new Date().getFullYear()} Tech Support Assistant. All rights reserved.
-            </p>
           </div>
         </div>
       </div>

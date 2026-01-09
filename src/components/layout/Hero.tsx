@@ -86,23 +86,23 @@ export const Hero = ({ onViewChange }: HeroProps) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-16">
           <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-            {t('hero.title', 'Get Expert Tech Support')}
+            {t('hero.title', 'Expert Tech Support')}
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8">
-            {t('hero.subtitle', '24/7 technical support in your language. Hardware, software, network solutions and more.')}
+            {t('hero.subtitle', 'Get help from certified technicians. Available 24/7 in 55+ languages.')}
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
+          <div className="flex flex-wrap items-center justify-center gap-6 mb-8">
             <div className="flex items-center text-green-600 dark:text-green-400">
               <Shield className="w-5 h-5 mr-2" />
-              <span className="font-medium">Secure & Trusted</span>
+              <span>Secure</span>
             </div>
             <div className="flex items-center text-blue-600 dark:text-blue-400">
               <Headphones className="w-5 h-5 mr-2" />
-              <span className="font-medium">24/7 Available</span>
+              <span>24/7</span>
             </div>
             <div className="flex items-center text-orange-600 dark:text-orange-400">
               <Monitor className="w-5 h-5 mr-2" />
-              <span className="font-medium">Expert Technicians</span>
+              <span>Certified</span>
             </div>
           </div>
         </div>
@@ -135,20 +135,20 @@ export const Hero = ({ onViewChange }: HeroProps) => {
             onClick={() => onViewChange('create-ticket')}
             className="w-full sm:w-auto px-8 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all font-medium shadow-lg hover:shadow-xl text-lg"
           >
-            {t('hero.cta', 'Get Support Now')}
+            {t('hero.cta', 'Get Support')}
           </button>
           <button
             onClick={() => onViewChange('find-agents')}
             className="w-full sm:w-auto px-8 py-4 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border-2 border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium text-lg"
           >
-            Find Expert Agents
+            Find Agents
           </button>
         </div>
 
         <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           <div>
-            <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">50K+</div>
-            <div className="text-gray-600 dark:text-gray-400">Happy Customers</div>
+            <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">5K+</div>
+            <div className="text-gray-600 dark:text-gray-400">Clients</div>
           </div>
           <div>
             <div className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">150+</div>
@@ -156,7 +156,7 @@ export const Hero = ({ onViewChange }: HeroProps) => {
           </div>
           <div>
             <div className="text-3xl font-bold text-orange-600 dark:text-orange-400 mb-2">24/7</div>
-            <div className="text-gray-600 dark:text-gray-400">Support</div>
+            <div className="text-gray-600 dark:text-gray-400">Available</div>
           </div>
           <div>
             <div className="text-3xl font-bold text-teal-600 dark:text-teal-400 mb-2">55+</div>

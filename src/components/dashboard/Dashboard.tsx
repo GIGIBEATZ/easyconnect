@@ -83,19 +83,19 @@ export const Dashboard = ({ onViewChange }: DashboardProps) => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Welcome back, {profile?.full_name}!
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          Welcome, {profile?.full_name}
         </h1>
-        <p className="text-gray-600">Manage your activities across the platform</p>
+        <p className="text-gray-600 dark:text-gray-400">Your dashboard</p>
       </div>
 
       <div className="mb-8">
-        <h2 className="text-lg font-semibold text-gray-900 mb-3">Your Roles</h2>
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Your Roles</h2>
         <div className="flex flex-wrap gap-2">
           {profile?.roles.map((role) => (
             <span
               key={role}
-              className="px-4 py-2 bg-blue-100 text-blue-700 rounded-full font-medium text-sm"
+              className="px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full font-medium text-sm"
             >
               {role.replace('_', ' ').charAt(0).toUpperCase() + role.replace('_', ' ').slice(1)}
             </span>
@@ -110,18 +110,18 @@ export const Dashboard = ({ onViewChange }: DashboardProps) => {
             <button
               key={card.action}
               onClick={() => onViewChange(card.action)}
-              className="bg-white rounded-lg shadow-sm hover:shadow-md transition-all p-6 text-left border border-gray-100"
+              className="bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all p-6 text-left border border-gray-100 dark:border-gray-700"
             >
               <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 ${getColorClasses(card.color)}`}>
                 <Icon className="w-6 h-6" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 {card.title}
               </h3>
-              <p className="text-gray-600 text-sm mb-3">
+              <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">
                 {card.description}
               </p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
                 {card.stats}
               </p>
             </button>
@@ -129,36 +129,20 @@ export const Dashboard = ({ onViewChange }: DashboardProps) => {
         })}
       </div>
 
-      <div className="mt-8 bg-white rounded-lg shadow-sm p-6 border border-gray-100">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
+      <div className="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-100 dark:border-gray-700">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Quick Actions</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {profile?.roles.includes('seller') && (
-            <button
-              onClick={() => onViewChange('marketplace')}
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-left"
-            >
-              Add New Product
-            </button>
-          )}
-          {profile?.roles.includes('employer') && (
-            <button
-              onClick={() => onViewChange('jobs')}
-              className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium text-left"
-            >
-              Post New Job
-            </button>
-          )}
           <button
-            onClick={() => onViewChange('marketplace')}
-            className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium text-left"
+            onClick={() => onViewChange('services')}
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-left"
           >
-            Browse Marketplace
+            Browse Services
           </button>
           <button
-            onClick={() => onViewChange('jobs')}
-            className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium text-left"
+            onClick={() => onViewChange('find-agents')}
+            className="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium text-left"
           >
-            Browse Jobs
+            Find Agents
           </button>
         </div>
       </div>
