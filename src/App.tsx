@@ -20,6 +20,7 @@ import { AgentsView } from './components/support/AgentsView';
 import { CreateTicketView } from './components/support/CreateTicketView';
 import { TicketsView } from './components/support/TicketsView';
 import { LearningHub } from './components/learning/LearningHub';
+import { RoomsList } from './components/chat/RoomsList';
 import { HeadphonesIcon } from 'lucide-react';
 import type { Database } from './lib/database.types';
 
@@ -122,6 +123,8 @@ function AppContent() {
           {currentView === 'home' && <Hero onViewChange={setCurrentView} />}
 
           {currentView === 'learning' && <LearningHub />}
+
+          {currentView === 'messages' && <RoomsList />}
 
           {currentView === 'services' && (
             <ServicesView
