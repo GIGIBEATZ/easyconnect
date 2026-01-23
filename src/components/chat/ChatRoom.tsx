@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import {
   ArrowLeft, Video, Phone, MoreVertical, Users,
-  Paperclip, Send, Smile, Check, CheckCheck
+  Paperclip, Send, Smile, CheckCheck
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
