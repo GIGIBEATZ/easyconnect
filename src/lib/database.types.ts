@@ -511,6 +511,711 @@ export interface Database {
           updated_at?: string
         }
       }
+      agent_pricing_profiles: {
+        Row: {
+          id: string
+          agent_id: string
+          hourly_rate: number
+          base_rate: number
+          minimum_charge: number
+          currency: string
+          allows_negotiation: boolean | null
+          description: string | null
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          agent_id: string
+          hourly_rate?: number
+          base_rate?: number
+          minimum_charge?: number
+          currency?: string
+          allows_negotiation?: boolean | null
+          description?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          agent_id?: string
+          hourly_rate?: number
+          base_rate?: number
+          minimum_charge?: number
+          currency?: string
+          allows_negotiation?: boolean | null
+          description?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+      }
+      price_proposals: {
+        Row: {
+          id: string
+          agent_id: string
+          client_id: string
+          ticket_id: string | null
+          title: string
+          description: string | null
+          breakdown: Json
+          subtotal: number
+          discount_amount: number
+          total_price: number
+          currency: string
+          payment_terms: string | null
+          status: string | null
+          expires_at: string | null
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          agent_id: string
+          client_id: string
+          ticket_id?: string | null
+          title: string
+          description?: string | null
+          breakdown?: Json
+          subtotal: number
+          discount_amount?: number
+          total_price: number
+          currency?: string
+          payment_terms?: string | null
+          status?: string | null
+          expires_at?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          agent_id?: string
+          client_id?: string
+          ticket_id?: string | null
+          title?: string
+          description?: string | null
+          breakdown?: Json
+          subtotal?: number
+          discount_amount?: number
+          total_price?: number
+          currency?: string
+          payment_terms?: string | null
+          status?: string | null
+          expires_at?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+      }
+      agreed_pricing: {
+        Row: {
+          id: string
+          ticket_id: string
+          proposal_id: string | null
+          agent_id: string
+          client_id: string
+          final_price: number
+          breakdown: Json
+          currency: string
+          payment_terms: string | null
+          agreed_by_agent_at: string | null
+          agreed_by_client_at: string | null
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          ticket_id: string
+          proposal_id?: string | null
+          agent_id: string
+          client_id: string
+          final_price: number
+          breakdown?: Json
+          currency?: string
+          payment_terms?: string | null
+          agreed_by_agent_at?: string | null
+          agreed_by_client_at?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          ticket_id?: string
+          proposal_id?: string | null
+          agent_id?: string
+          client_id?: string
+          final_price?: number
+          breakdown?: Json
+          currency?: string
+          payment_terms?: string | null
+          agreed_by_agent_at?: string | null
+          agreed_by_client_at?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+      }
+      price_negotiation_history: {
+        Row: {
+          id: string
+          proposal_id: string
+          from_user_id: string
+          to_user_id: string
+          action: string
+          proposed_amount: number | null
+          notes: string | null
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          proposal_id: string
+          from_user_id: string
+          to_user_id: string
+          action: string
+          proposed_amount?: number | null
+          notes?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          proposal_id?: string
+          from_user_id?: string
+          to_user_id?: string
+          action?: string
+          proposed_amount?: number | null
+          notes?: string | null
+          created_at?: string | null
+        }
+      }
+      learning_topics: {
+        Row: {
+          id: string
+          title: string
+          description: string
+          icon: string
+          color: string
+          total_xp: number
+          estimated_hours: number
+          order_index: number
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          title: string
+          description: string
+          icon?: string
+          color?: string
+          total_xp?: number
+          estimated_hours?: number
+          order_index?: number
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          title?: string
+          description?: string
+          icon?: string
+          color?: string
+          total_xp?: number
+          estimated_hours?: number
+          order_index?: number
+          created_at?: string | null
+        }
+      }
+      learning_modules: {
+        Row: {
+          id: string
+          topic_id: string
+          title: string
+          description: string
+          level: number
+          unlock_requirement: number
+          xp_reward: number
+          order_index: number
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          topic_id: string
+          title: string
+          description: string
+          level?: number
+          unlock_requirement?: number
+          xp_reward?: number
+          order_index?: number
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          topic_id?: string
+          title?: string
+          description?: string
+          level?: number
+          unlock_requirement?: number
+          xp_reward?: number
+          order_index?: number
+          created_at?: string | null
+        }
+      }
+      learning_lessons: {
+        Row: {
+          id: string
+          module_id: string
+          title: string
+          description: string
+          content: Json
+          duration_minutes: number
+          xp_reward: number
+          order_index: number
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          module_id: string
+          title: string
+          description: string
+          content?: Json
+          duration_minutes?: number
+          xp_reward?: number
+          order_index?: number
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          module_id?: string
+          title?: string
+          description?: string
+          content?: Json
+          duration_minutes?: number
+          xp_reward?: number
+          order_index?: number
+          created_at?: string | null
+        }
+      }
+      learning_quizzes: {
+        Row: {
+          id: string
+          lesson_id: string
+          title: string
+          passing_score: number
+          xp_reward: number
+          time_limit_seconds: number | null
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          lesson_id: string
+          title: string
+          passing_score?: number
+          xp_reward?: number
+          time_limit_seconds?: number | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          lesson_id?: string
+          title?: string
+          passing_score?: number
+          xp_reward?: number
+          time_limit_seconds?: number | null
+          created_at?: string | null
+        }
+      }
+      quiz_questions: {
+        Row: {
+          id: string
+          quiz_id: string
+          question_text: string
+          question_type: string
+          points: number
+          order_index: number
+          explanation: string | null
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          quiz_id: string
+          question_text: string
+          question_type?: string
+          points?: number
+          order_index?: number
+          explanation?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          quiz_id?: string
+          question_text?: string
+          question_type?: string
+          points?: number
+          order_index?: number
+          explanation?: string | null
+          created_at?: string | null
+        }
+      }
+      quiz_options: {
+        Row: {
+          id: string
+          question_id: string
+          option_text: string
+          is_correct: boolean
+          order_index: number
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          question_id: string
+          option_text: string
+          is_correct?: boolean
+          order_index?: number
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          question_id?: string
+          option_text?: string
+          is_correct?: boolean
+          order_index?: number
+          created_at?: string | null
+        }
+      }
+      user_learning_progress: {
+        Row: {
+          id: string
+          user_id: string
+          lesson_id: string
+          completed: boolean
+          xp_earned: number
+          completed_at: string | null
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          lesson_id: string
+          completed?: boolean
+          xp_earned?: number
+          completed_at?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          lesson_id?: string
+          completed?: boolean
+          xp_earned?: number
+          completed_at?: string | null
+          created_at?: string | null
+        }
+      }
+      user_quiz_attempts: {
+        Row: {
+          id: string
+          user_id: string
+          quiz_id: string
+          score: number
+          xp_earned: number
+          passed: boolean
+          time_taken_seconds: number | null
+          answers: Json
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          quiz_id: string
+          score?: number
+          xp_earned?: number
+          passed?: boolean
+          time_taken_seconds?: number | null
+          answers?: Json
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          quiz_id?: string
+          score?: number
+          xp_earned?: number
+          passed?: boolean
+          time_taken_seconds?: number | null
+          answers?: Json
+          created_at?: string | null
+        }
+      }
+      user_xp_totals: {
+        Row: {
+          id: string
+          user_id: string
+          topic_id: string
+          total_xp: number
+          current_level: number
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          topic_id: string
+          total_xp?: number
+          current_level?: number
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          topic_id?: string
+          total_xp?: number
+          current_level?: number
+          updated_at?: string | null
+        }
+      }
+      daily_streaks: {
+        Row: {
+          id: string
+          user_id: string
+          current_streak: number
+          longest_streak: number
+          last_activity_date: string | null
+          total_days_learned: number
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          current_streak?: number
+          longest_streak?: number
+          last_activity_date?: string | null
+          total_days_learned?: number
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          current_streak?: number
+          longest_streak?: number
+          last_activity_date?: string | null
+          total_days_learned?: number
+          updated_at?: string | null
+        }
+      }
+      achievements: {
+        Row: {
+          id: string
+          title: string
+          description: string
+          icon: string
+          badge_color: string
+          requirement_type: string
+          requirement_value: number
+          xp_reward: number
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          title: string
+          description: string
+          icon?: string
+          badge_color?: string
+          requirement_type: string
+          requirement_value?: number
+          xp_reward?: number
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          title?: string
+          description?: string
+          icon?: string
+          badge_color?: string
+          requirement_type?: string
+          requirement_value?: number
+          xp_reward?: number
+          created_at?: string | null
+        }
+      }
+      user_achievements: {
+        Row: {
+          id: string
+          user_id: string
+          achievement_id: string
+          earned_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          achievement_id: string
+          earned_at?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          achievement_id?: string
+          earned_at?: string | null
+        }
+      }
+      chat_rooms: {
+        Row: {
+          id: string
+          ticket_id: string | null
+          room_name: string
+          room_type: string
+          status: string
+          priority: string
+          created_by: string
+          created_at: string | null
+          closed_at: string | null
+          metadata: Json
+        }
+        Insert: {
+          id?: string
+          ticket_id?: string | null
+          room_name: string
+          room_type?: string
+          status?: string
+          priority?: string
+          created_by: string
+          created_at?: string | null
+          closed_at?: string | null
+          metadata?: Json
+        }
+        Update: {
+          id?: string
+          ticket_id?: string | null
+          room_name?: string
+          room_type?: string
+          status?: string
+          priority?: string
+          created_by?: string
+          created_at?: string | null
+          closed_at?: string | null
+          metadata?: Json
+        }
+      }
+      room_participants: {
+        Row: {
+          id: string
+          room_id: string
+          user_id: string
+          role: string
+          joined_at: string | null
+          left_at: string | null
+          is_active: boolean | null
+          last_seen_at: string | null
+        }
+        Insert: {
+          id?: string
+          room_id: string
+          user_id: string
+          role?: string
+          joined_at?: string | null
+          left_at?: string | null
+          is_active?: boolean | null
+          last_seen_at?: string | null
+        }
+        Update: {
+          id?: string
+          room_id?: string
+          user_id?: string
+          role?: string
+          joined_at?: string | null
+          left_at?: string | null
+          is_active?: boolean | null
+          last_seen_at?: string | null
+        }
+      }
+      chat_messages: {
+        Row: {
+          id: string
+          room_id: string
+          sender_id: string
+          message_type: string
+          content: string
+          metadata: Json | null
+          reply_to_id: string | null
+          is_edited: boolean | null
+          is_deleted: boolean | null
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          room_id: string
+          sender_id: string
+          message_type?: string
+          content: string
+          metadata?: Json | null
+          reply_to_id?: string | null
+          is_edited?: boolean | null
+          is_deleted?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          room_id?: string
+          sender_id?: string
+          message_type?: string
+          content?: string
+          metadata?: Json | null
+          reply_to_id?: string | null
+          is_edited?: boolean | null
+          is_deleted?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+      }
+      agent_availability: {
+        Row: {
+          id: string
+          agent_id: string
+          status: string
+          status_message: string | null
+          max_concurrent_rooms: number | null
+          current_room_count: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          agent_id: string
+          status?: string
+          status_message?: string | null
+          max_concurrent_rooms?: number | null
+          current_room_count?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          agent_id?: string
+          status?: string
+          status_message?: string | null
+          max_concurrent_rooms?: number | null
+          current_room_count?: number | null
+          updated_at?: string | null
+        }
+      }
+      agent_activity: {
+        Row: {
+          id: string
+          agent_id: string
+          room_id: string
+          activity_type: string
+          created_at: string | null
+          expires_at: string | null
+        }
+        Insert: {
+          id?: string
+          agent_id: string
+          room_id: string
+          activity_type: string
+          created_at?: string | null
+          expires_at?: string | null
+        }
+        Update: {
+          id?: string
+          agent_id?: string
+          room_id?: string
+          activity_type?: string
+          created_at?: string | null
+          expires_at?: string | null
+        }
+      }
     }
   }
 }
