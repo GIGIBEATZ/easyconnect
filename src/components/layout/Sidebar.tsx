@@ -39,6 +39,14 @@ export const Sidebar = ({ currentView, onViewChange, isOpen, onClose }: SidebarP
       color: 'bg-blue-500',
     },
     {
+      id: 'dashboard',
+      label: 'Dashboard',
+      icon: Home,
+      view: 'dashboard',
+      color: 'bg-blue-600',
+      requiresAuth: true,
+    },
+    {
       id: 'learning',
       label: 'Learning Hub',
       icon: GraduationCap,
@@ -72,6 +80,13 @@ export const Sidebar = ({ currentView, onViewChange, isOpen, onClose }: SidebarP
       view: 'messages',
       color: 'bg-pink-500',
       requiresAuth: true,
+    },
+    {
+      id: 'kb',
+      label: 'Knowledge Base',
+      icon: GraduationCap,
+      view: 'kb',
+      color: 'bg-teal-500',
     },
     {
       id: 'profile',

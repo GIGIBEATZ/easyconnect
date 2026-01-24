@@ -21,6 +21,7 @@ import { CreateTicketView } from './components/support/CreateTicketView';
 import { TicketsView } from './components/support/TicketsView';
 import { LearningHub } from './components/learning/LearningHub';
 import { RoomsList } from './components/chat/RoomsList';
+import { FloatingActionButton } from './components/layout/FloatingActionButton';
 import { HeadphonesIcon } from 'lucide-react';
 import type { Database } from './lib/database.types';
 
@@ -331,6 +332,10 @@ function AppContent() {
             </div>
           )}
         </main>
+
+        {user && (
+          <FloatingActionButton onClick={() => setCurrentView('create-ticket')} />
+        )}
 
         <Footer onViewChange={setCurrentView} />
 

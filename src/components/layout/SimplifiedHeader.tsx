@@ -26,7 +26,7 @@ export const SimplifiedHeader = ({ onViewChange, onMenuToggle }: SimplifiedHeade
     <header className="bg-white dark:bg-gray-900 shadow-sm sticky top-0 z-30 transition-colors border-b border-gray-200 dark:border-gray-800">
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center gap-4 flex-1">
+          <div className="flex items-center gap-3 flex-1">
             <button
               onClick={onMenuToggle}
               className="lg:hidden p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
@@ -46,6 +46,14 @@ export const SimplifiedHeader = ({ onViewChange, onMenuToggle }: SimplifiedHeade
                 />
               </div>
             </form>
+
+            <button
+              onClick={() => onViewChange('kb')}
+              className="md:hidden p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+              aria-label="Search"
+            >
+              <Search className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+            </button>
           </div>
 
           <div className="flex items-center gap-2">
@@ -129,19 +137,6 @@ export const SimplifiedHeader = ({ onViewChange, onMenuToggle }: SimplifiedHeade
             )}
           </div>
         </div>
-
-        <form onSubmit={handleSearch} className="md:hidden pb-3">
-          <div className="relative w-full">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-            />
-          </div>
-        </form>
       </div>
     </header>
   );

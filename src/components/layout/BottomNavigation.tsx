@@ -1,4 +1,5 @@
-import { Home, Headphones, Users, GraduationCap, Menu } from 'lucide-react';
+import { Home, Headphones, Users, GraduationCap, Menu, Ticket, MessageCircle } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface BottomNavigationProps {
   currentView: string;
@@ -7,11 +8,18 @@ interface BottomNavigationProps {
 }
 
 export const BottomNavigation = ({ currentView, onViewChange, onMenuToggle }: BottomNavigationProps) => {
+  const { user } = useAuth();
+
   const navItems = [
     { id: 'home', label: 'Home', icon: Home, view: 'home' },
+    ...(user ? [
+      { id: 'tickets', label: 'Tickets', icon: Ticket, view: 'tickets' },
+      { id: 'messages', label: 'Chat', icon: MessageCircle, view: 'messages' },
+    ] : [
+      { id: 'services', label: 'Services', icon: Headphones, view: 'services' },
+      { id: 'agents', label: 'Agents', icon: Users, view: 'find-agents' },
+    ]),
     { id: 'learning', label: 'Learn', icon: GraduationCap, view: 'learning' },
-    { id: 'services', label: 'Services', icon: Headphones, view: 'services' },
-    { id: 'agents', label: 'Agents', icon: Users, view: 'find-agents' },
     { id: 'more', label: 'More', icon: Menu, action: 'menu' },
   ];
 
