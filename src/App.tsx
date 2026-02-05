@@ -22,6 +22,10 @@ import { TicketsView } from './components/support/TicketsView';
 import { LearningHub } from './components/learning/LearningHub';
 import { RoomsList } from './components/chat/RoomsList';
 import { FloatingActionButton } from './components/layout/FloatingActionButton';
+import { ProfileView } from './components/profile/ProfileView';
+import { NotificationsView } from './components/notifications/NotificationsView';
+import { KnowledgeBaseView } from './components/knowledge/KnowledgeBaseView';
+import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { HeadphonesIcon } from 'lucide-react';
 import type { Database } from './lib/database.types';
 
@@ -315,7 +319,13 @@ function AppContent() {
 
           {currentView === 'settings' && <SettingsView />}
 
-          {['about', 'help', 'terms', 'privacy', 'contact', 'faq', 'kb'].includes(currentView) && (
+          {currentView === 'profile' && <ProfileView />}
+
+          {currentView === 'notifications' && <NotificationsView />}
+
+          {currentView === 'kb' && <KnowledgeBaseView />}
+
+          {['about', 'help', 'terms', 'privacy', 'faq'].includes(currentView) && (
             <StaticPage slug={currentView} onBack={() => setCurrentView('home')} />
           )}
 
@@ -351,15 +361,17 @@ function AppContent() {
 
 function App() {
   return (
-    <AuthProvider>
-      <LanguageProvider>
-        <ThemeProvider>
-          <NotificationsProvider>
-            <AppContent />
-          </NotificationsProvider>
-        </ThemeProvider>
-      </LanguageProvider>
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <LanguageProvider>
+          <ThemeProvider>
+            <NotificationsProvider>
+              <AppContent />
+            </NotificationsProvider>
+          </ThemeProvider>
+        </LanguageProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
 
