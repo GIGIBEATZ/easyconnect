@@ -109,14 +109,12 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
-      {user && (
-        <Sidebar
-          currentView={currentView}
-          onViewChange={setCurrentView}
-          isOpen={sidebarOpen}
-          onClose={() => setSidebarOpen(false)}
-        />
-      )}
+      <Sidebar
+        currentView={currentView}
+        onViewChange={setCurrentView}
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
 
       <div className={`flex-1 flex flex-col ${user ? 'lg:ml-64' : ''}`}>
         <SimplifiedHeader
